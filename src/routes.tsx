@@ -3,6 +3,7 @@ import { Navigate, useRoutes } from 'react-router-dom';
 import DashboardLayout from './layouts/dashboard';
 //
 import DashboardAppPage from './pages/DashboardAppPage';
+import Page404 from './pages/Page404';
 
 // ----------------------------------------------------------------------
 
@@ -22,6 +23,9 @@ export default function Router() {
       path: '*',
       element: <Navigate to="/404" replace />,
     },
+    {
+      path: '404', element: <Page404 />,
+    }
   ]);
 
   return routes;
