@@ -6,26 +6,35 @@ import Iconify from '../components/iconify';
 // sections
 import {
   BoardsList
-} from '../sections/@dashboard/app';
+} from '../sections/@dashboard/boards';
+import styled from '@emotion/styled';
 
 // ----------------------------------------------------------------------
+
+const StyledContainer = styled('div')({
+  width: 'calc(100% - 83px)',
+  display: 'flex',
+  margin: '40px 43px',
+})
 
 export default function DashboardAppPage() {
   const theme = useTheme();
 
   return (
-    <>
-      <Container maxWidth="xl">
-        <Typography variant="h4" sx={{ mb: 5 }}>
-          Hi
-        </Typography>
+    <StyledContainer>
+      {/* <Container> */}
+      <Grid container sx={{ marginTop: '0', marginLeft: '0', width: '100%' }}>
+        {/* <Grid item xs={12} sm={6} md={3}> */}
+        <BoardsList boards={[
+          { id: 'board 1', name: 'Board 1' },
+          { id: 'board 2', name: 'Board 2' },
+          { id: 'board 3', name: 'Board 3' },
+          { id: 'board 4', name: 'Board 4' }
+        ]}
+        />
+        {/* </Grid> */}
 
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm={6} md={3}>
-            <BoardsList boards={[{ id: 'board 1' }, { id: 'board 2' }, { id: 'board 3' }]} />
-          </Grid>
-
-          {/* <Grid item xs={12} md={6} lg={8}>
+        {/* <Grid item xs={12} md={6} lg={8}>
             <AppWebsiteVisits
               title="Website Visits"
               subheader="(+43%) than last year"
@@ -65,7 +74,7 @@ export default function DashboardAppPage() {
             />
           </Grid> */}
 
-          {/* <Grid item xs={12} md={6} lg={4}>
+        {/* <Grid item xs={12} md={6} lg={4}>
             <AppCurrentVisits
               title="Current Visits"
               chartData={[
@@ -83,7 +92,7 @@ export default function DashboardAppPage() {
             />
           </Grid> */}
 
-          {/* <Grid item xs={12} md={6} lg={8}>
+        {/* <Grid item xs={12} md={6} lg={8}>
             <AppConversionRates
               title="Conversion Rates"
               subheader="(+43%) than last year"
@@ -102,7 +111,7 @@ export default function DashboardAppPage() {
             />
           </Grid> */}
 
-          {/* <Grid item xs={12} md={6} lg={4}>
+        {/* <Grid item xs={12} md={6} lg={4}>
             <AppCurrentSubject
               title="Current Subject"
               chartLabels={['English', 'History', 'Physics', 'Geography', 'Chinese', 'Math']}
@@ -158,8 +167,8 @@ export default function DashboardAppPage() {
               ]}
             />
           </Grid> */}
-        </Grid>
-      </Container>
-    </>
+      </Grid>
+      {/* </Container> */}
+    </StyledContainer>
   );
 }
