@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/metricloop-frontend-rp/static/css/main.073c9b0a.css",
-    "main.js": "/metricloop-frontend-rp/static/js/main.7c77f5a1.js",
-    "static/js/787.0b3002d7.chunk.js": "/metricloop-frontend-rp/static/js/787.0b3002d7.chunk.js",
-    "index.html": "/metricloop-frontend-rp/index.html",
-    "main.073c9b0a.css.map": "/metricloop-frontend-rp/static/css/main.073c9b0a.css.map",
-    "main.7c77f5a1.js.map": "/metricloop-frontend-rp/static/js/main.7c77f5a1.js.map",
-    "787.0b3002d7.chunk.js.map": "/metricloop-frontend-rp/static/js/787.0b3002d7.chunk.js.map"
+    "main.css": "/metricloop-test/static/css/main.073c9b0a.css",
+    "main.js": "/metricloop-test/static/js/main.393efb67.js",
+    "static/js/787.0b3002d7.chunk.js": "/metricloop-test/static/js/787.0b3002d7.chunk.js",
+    "index.html": "/metricloop-test/index.html",
+    "main.073c9b0a.css.map": "/metricloop-test/static/css/main.073c9b0a.css.map",
+    "main.393efb67.js.map": "/metricloop-test/static/js/main.393efb67.js.map",
+    "787.0b3002d7.chunk.js.map": "/metricloop-test/static/js/787.0b3002d7.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.073c9b0a.css",
-    "static/js/main.7c77f5a1.js"
+    "static/js/main.393efb67.js"
   ]
 }
