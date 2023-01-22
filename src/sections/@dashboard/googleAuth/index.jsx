@@ -9,8 +9,9 @@ function GoogleAuthPage() {
   // &scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fdrive+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fdrive
   // &access_type=offline
 
+  console.log(window.location);
   let url = `https://accounts.google.com/o/oauth2/v2/auth?`;
-  const redirectUri = "http://localhost:3000/google-auth";
+  const redirectUri = `${window.location.origin}/google-auth`;
   const prompt = "consent";
   const clientId =
     "127029116979-8vfa4jobi4p8t85obl4u05kg115g5qtn.apps.googleusercontent.com";
