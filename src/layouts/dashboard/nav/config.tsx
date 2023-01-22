@@ -24,7 +24,7 @@ const navConfig = [
   {
     title: 'Google',
     path: '/dashboard/google',
-    icon: icon('ic_user'),
+    icon: icon('ic_google'),
   },
 ];
 
