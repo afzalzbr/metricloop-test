@@ -21,6 +21,11 @@ const navConfig = [
     path: '/dashboard/graphs',
     icon: icon('ic_graphs'),
   },
+  {
+    title: 'Google',
+    path: '/dashboard/google',
+    icon: icon('ic_user'),
+  },
 ];
 
 export default navConfig;

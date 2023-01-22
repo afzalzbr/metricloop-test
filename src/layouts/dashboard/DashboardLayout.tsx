@@ -39,7 +39,7 @@ export default function DashboardLayout() {
     <StyledRoot>
       <Header onOpenNav={() => setOpen(true)} />
 
-      <Nav openNav={open} onCloseNav={() => setOpen(false)} />
+      {window.location.pathname.split('/').includes('board') ? null : <Nav openNav={open} onCloseNav={() => setOpen(false)} />}
 
       <Main>
         <Outlet />

@@ -12,6 +12,7 @@ import AccountPopover from './AccountPopover';
 import LanguagePopover from './LanguagePopover';
 import NotificationsPopover from './NotificationsPopover';
 import { HEADER_GRADIENT } from '../../../theme/palette';
+import { Link } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
 
@@ -63,6 +64,12 @@ export default function Header({ onOpenNav }: HeaderProps) {
         >
           <Iconify icon="eva:menu-2-fill" />
         </IconButton>
+        <Link style={{
+          textDecoration: 'none',
+          color: 'white'
+        }} to='/dashboard/app' >
+          Metric Loop
+        </Link>
 
         {/* <Searchbar /> */}
         <Box sx={{ flexGrow: 1 }} />

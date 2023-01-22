@@ -25,12 +25,13 @@ export default function DashboardAppPage() {
       {/* <Container> */}
       <Grid container sx={{ marginTop: '0', marginLeft: '0', width: '100%' }}>
         {/* <Grid item xs={12} sm={6} md={3}> */}
-        <BoardsList boards={[
-          { id: 'board 1', name: 'Board 1' },
-          { id: 'board 2', name: 'Board 2' },
-          { id: 'board 3', name: 'Board 3' },
-          { id: 'board 4', name: 'Board 4' }
-        ]}
+        <BoardsList
+          boards={[
+            { id: 'board 1', name: 'Board 1' },
+            { id: 'board 2', name: 'Board 2' },
+            { id: 'board 3', name: 'Board 3' },
+            { id: 'board 4', name: 'Board 4' }
+          ]}
         />
         {/* </Grid> */}
 
