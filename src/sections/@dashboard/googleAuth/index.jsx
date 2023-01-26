@@ -15,8 +15,15 @@ function GoogleAuthPage() {
   const prompt = "consent";
   const clientId =
     "127029116979-8vfa4jobi4p8t85obl4u05kg115g5qtn.apps.googleusercontent.com";
-  const scope =
-    "https://www.googleapis.com/auth/drive https://spreadsheets.google.com/feeds/";
+  const scopes = [
+    "https://www.googleapis.com/auth/drive",
+    "https://spreadsheets.google.com/feeds/",
+    "https://www.googleapis.com/auth/drive.file",
+    "https://www.googleapis.com/auth/drive.readonly",
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/spreadsheets.readonly",
+  ];
+  const scope = scopes.join(" ");
   const accessType = "offline";
 
   url += `redirect_uri=${redirectUri}&prompt=${prompt}&response_type=code&client_id=${clientId}&scope=${encodeURIComponent(
