@@ -16,9 +16,11 @@ import CustomNode from "./Nodes/CustomNode";
 
 import "reactflow/dist/style.css";
 import "./Styles/overview.css";
+import DefaultNode from "./Nodes/DefaultNode";
 
 const nodeTypes = {
   custom: CustomNode,
+  custom2: DefaultNode,
 };
 
 const minimapStyle = {

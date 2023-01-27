@@ -12,10 +12,16 @@ export const nodes = [
   },
   {
     id: '2',
+    type: 'custom2',
     data: {
-      label: 'Default Node',
+      label: 'custom2 Node',
     },
     position: { x: 100, y: 100 },
+    className: 'default-node',
+    style: {
+      background: '#fff',
+      color: 'white',
+    },
   },
   {
     id: '3',
