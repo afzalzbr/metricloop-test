@@ -1,0 +1,14 @@
+.SvgIcons {
+  .DataIcon,
+  .SegmentsIcon,
+  .MatricsIcon {
+    display: flow-root;
+    padding: 12%;
+    height: 40px;
+    margin: 0 0 0 -40%;
+  }
+  .MatricLoopLogoIcon,
+  .PersonIcon {
+    display: flex;
+  }
+}

@@ -1,0 +1,51 @@
+.Homepage {
+  .homeContainer {
+    padding-top: 4rem;
+    height: calc(100vh - 64px);
+    background-image: url("../images/homepage-bg.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position-y: 1rem;
+    .heading1 {
+      font-family: "Segoe UI";
+      font-size: 40px;
+      font-weight: 600;
+      color: #4e46dc;
+    }
+    .createBtn {
+      font-family: "Segoe UI" !important;
+      font-size: 19px;
+      font-weight: 400;
+      height: 44px;
+    }
+  }
+  .AddModel {
+    padding: 3%;
+    .spantext {
+      font-family: "Segoe UI";
+      font-size: 16px;
+      font-weight: 400;
+      color: #575757;
+      margin-top: 5%;
+    }
+    .ant-select-selector {
+      background-color: #ebebeb;
+    }
+    .submit {
+      font-family: "Sulphur Point";
+      font-size: 20px;
+      font-weight: 400;
+      height: 44px;
+      margin-left: 4%;
+    }
+    .cancelbtn {
+      font-family: "Sulphur Point";
+      font-size: 20px;
+      font-weight: 400;
+      height: 44px;
+      background-color: #e3e3e3;
+      padding: 0 4%;
+      color: #707070;
+    }
+  }
+}

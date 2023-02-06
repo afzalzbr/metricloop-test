@@ -1,0 +1,133 @@
+.MatricsPage {
+  display: block;
+  .w-100 {
+    width: 100%;
+  }
+  .h-100 {
+    height: 100%;
+  }
+  .heading1 {
+    font-family: "Sulphur Point";
+    font-size: 40px;
+    font-weight: 700;
+    color: #4e46dc;
+  }
+  .table-heading {
+    font-family: "Sulphur Point";
+    font-size: 16px;
+    font-weight: 400;
+    color: white;
+  }
+  .table-data {
+    font-family: "Sulphur Point";
+    font-size: 16px;
+    font-weight: 400;
+    color: rgb(2, 2, 2);
+  }
+  .AddDialog {
+    .TopBar {
+      border-bottom: 1px solid #c7c7c7;
+      .heading1 {
+        font-family: "Sulphur Point";
+        font-size: 26px;
+        font-weight: 400;
+        color: #4e46dc;
+      }
+      .activeTabData {
+        position: absolute;
+        bottom: 0;
+        display: inline-flex;
+        bottom: -4px;
+      }
+    }
+    .ContentBox {
+      margin-top: 3%;
+      padding: 0 4%;
+      .heading1 {
+        font-family: "Segoe UI";
+        font-size: 24px;
+        font-weight: 600;
+        color: #575757;
+      }
+      .heading2 {
+        font-family: "Sulphur Point";
+        font-size: 20px;
+        font-weight: 700;
+        color: #575757;
+      }
+      .ant-select {
+        height: 49px !important;
+      }
+      
+      .ant-input {
+        height: 49px !important;
+        font-family: "Segoe UI" !important;
+        font-size: 20px !important;
+        padding: 7px 11px !important;
+      }
+
+      .ant-select-selector {
+        height: 49px !important;
+        font-family: "Segoe UI" !important;
+        font-size: 20px !important;
+        padding: 7px 11px !important;
+        background-color: #efeeff;
+      }
+      .ant-select-arrow {
+        font-size: 1rem;
+        color: #4e46dc;
+      }
+      .selectCustomStyle {
+        background-color: #efeeff;
+        border-bottom: 1px solid #4e46dc;
+      }
+      .OfSpan {
+        font-family: "Sulphur Point";
+        font-size: 20px;
+        font-weight: 700;
+        color: #575757;
+        margin: 26%;
+      }
+      .actionButton {
+        margin-top: 3%;
+        .cancelBtn {
+          border: none;
+          cursor: pointer;
+          background-color: #e3e3e3;
+          height: 45px;
+          width: 111px;
+          font-family: "Sulphur Point";
+          font-size: 26px;
+          font-weight: 400;
+          color: #707070;
+          border-radius: 9px;
+        }
+        .saveBtn {
+          border: none;
+          cursor: pointer;
+          height: 45px;
+          width: 170px;
+          background-color: #4e46dc;
+          border-radius: 9px;
+          color: white;
+          font-family: "Sulphur Point";
+          font-size: 26px;
+          font-weight: 400;
+          margin: 0 1%;
+        }
+        .deleteBtn {
+          border: none;
+          cursor: pointer;
+          height: 45px;
+          width: 170px;
+          background-color: #ff302b;
+          border-radius: 9px;
+          color: white;
+          font-family: Sulphur Point;
+          font-size: 26px;
+          font-weight: 400;
+        }
+      }
+    }
+  }
+}

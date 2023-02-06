@@ -1,0 +1,101 @@
+.trigger {
+  padding: 0 24px;
+  font-size: 18px;
+  line-height: 64px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+// .trigger:hover {
+//   background-color: #4791ff;
+//   color: white !important;
+// }
+.ant-menu-item-selected {
+  background-color: #59a7e5;
+  color: white !important;
+}
+.ant-menu-item:hover {
+  background-color: #59a7e5 !important;
+  color: white !important;
+}
+.topbar {
+  align-items: center;
+  display: flex;
+  background: linear-gradient(
+    270.03deg,
+    #bc00ff 0.01%,
+    #4e46dc 99.98%
+  ) !important;
+  justify-content: space-between;
+  .profileDropDown {
+    z-index: 10000000;
+    box-shadow: 0px 6px 32px #888888;
+    height: 200px;
+    width: 200px;
+    position: absolute;
+    background-color: #ffffff;
+    bottom: 0rem;
+    right: 0;
+    cursor: default;
+    top: 4rem;
+    line-height: 40px;
+    border-radius: 17px;
+    padding: 0.8rem;
+    .UserNameFont {
+      margin-top: 0rem;
+      color: rgb(2, 2, 2);
+      font-family: "Sulphur Point";
+      font-size: 20px;
+      font-weight: 700;
+      margin-top: 5%;
+    }
+    .EmailFont {
+      line-height: 20px;
+    }
+    .logoutButton {
+      border: none;
+      margin-top: 0.7rem;
+      width: 100%;
+      color: white;
+      font-family: "Sulphur Point";
+      font-size: 20px;
+      font-weight: 700;
+      cursor: pointer;
+      background-color: #4e46dc;
+      border-radius: 7px;
+    }
+  }
+}
+.sidebar {
+  background: #4e46dc !important;
+  box-shadow: 0px 11px 22px rgba(0, 0, 0, 0.25);
+  border-radius: 0px 18px 18px 0px;
+
+  .text {
+    font-family: "Sulphur Point";
+    font-size: 20px;
+    font-weight: 700;
+    color: white;
+    margin-left: 2%;
+  }
+}
+
+.arrow-btn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  display: block;
+  margin-left: 1.4rem;
+  margin-top: 15%;
+  margin-bottom: 5%;
+}
+.bg-transparent {
+  background: transparent;
+}
+.ant-menu-title-content {
+  display: flex !important;
+  padding-left: 1rem;
+}
+.ant-menu-item {
+  margin: 8% 0 !important;
+}
