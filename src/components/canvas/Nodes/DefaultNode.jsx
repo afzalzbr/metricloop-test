@@ -73,8 +73,8 @@ const DefaultNode = () => {
       {/* <Grid container spacing={0} sx={{ height: "auto", width: "100px" }}> */}
       <Stack spacing={1} sx={{ width: "100%" }}>
         <Stack direction="row" alignItems="center" spacing={1}>
-          <>Node 1</>
-          <>
+          <div>Node 1</div>
+          <div>
             <IconButtonSquare aria-label="delete" size="small">
               <EqualizerSharpIcon fontSize="inherit" />
             </IconButtonSquare>
@@ -87,7 +87,7 @@ const DefaultNode = () => {
             <IconButtonSquare aria-label="delete" size="small">
               <ArticleOutlinedIcon fontSize="inherit" />
             </IconButtonSquare>
-          </>
+          </div>
         </Stack>
         {[1, 2, 3].map((item) => (
           <Item width="100%">
@@ -128,6 +128,10 @@ const DefaultNode = () => {
           </Item>
         ))}
       </Stack>
+      <AddCircleOutlineOutlinedIcon className="top" />
+      <AddCircleOutlineOutlinedIcon className="right" />
+      <AddCircleOutlineOutlinedIcon className="bottom" />
+      <AddCircleOutlineOutlinedIcon className="left" />
       {/* </Grid> */}
     </Paper>
   );
