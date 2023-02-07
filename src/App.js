@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Route, Routes, Navigate } from "react-router-dom";
 import "./App.css";
 import AuthLayout from "./Components/Layout/AuthLayout";
@@ -14,6 +15,7 @@ import ErrorPage from "./Components/Pages/Error/ErrorPage";
 import HomePage from "./Components/Pages/HomePage/HomePage";
 
 function App() {
+
   return (
     <div className="App">
       <Routes>
