@@ -1,43 +1,45 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { Suspense, lazy, } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import "./App.css";
-import AuthLayout from "./Components/Layout/AuthLayout";
-import DashboardLayout from "./Components/Layout/DashboardLayout";
-import EditorLayout from "./Components/Layout/EditorLayout";
-import LoginPage from "./Components/Pages/Auth/Login/Login";
-import RegisterPage from "./Components/Pages/Auth/Register/Register";
-import BoardPage from "./Components/Pages/BoardPage/BoardPage";
-import DataPage from "./Components/Pages/Dashboard/DataPage/Datapage";
-import MatricsPage from "./Components/Pages/Dashboard/MetricsPage/MetricsPage";
-import SegmentsPage from "./Components/Pages/Dashboard/SegmentsPage/SegmentsPage";
-import ErrorPage from "./Components/Pages/Error/ErrorPage";
-import HomePage from "./Components/Pages/HomePage/HomePage";
+
+const AuthLayout = lazy(() => import('./Components/Layout/AuthLayout'));
+const DashboardLayout = lazy(() => import('./Components/Layout/DashboardLayout'));
+const EditorLayout = lazy(() => import('./Components/Layout/EditorLayout'));
+const LoginPage = lazy(() => import('./Components/Pages/Auth/Login/Login'));
+const RegisterPage = lazy(() => import('./Components/Pages/Auth/Register/Register'));
+const BoardPage = lazy(() => import('./Components/Pages/BoardPage/BoardPage'));
+const DataPage = lazy(() => import('./Components/Pages/Dashboard/DataPage/Datapage'));
+const MatricsPage = lazy(() => import('./Components/Pages/Dashboard/MetricsPage/MetricsPage'));
+const SegmentsPage = lazy(() => import('./Components/Pages/Dashboard/SegmentsPage/SegmentsPage'));
+const ErrorPage = lazy(() => import('./Components/Pages/Error/ErrorPage'));
+const HomePage = lazy(() => import('./Components/Pages/HomePage/HomePage'));
 
 function App() {
 
   return (
     <div className="App">
-      <Routes>
-        <Route path="/" element={<DashboardLayout />}>
-          <Route path="/" element={<Navigate replace to="/" />} />
-          <Route path="/" element={<HomePage />} />
-          <Route path="board" element={<BoardPage />} />
-          <Route path="data" element={<DataPage />} />
-          <Route path="metrics" element={<MatricsPage />} />
-          <Route path="segments" element={<SegmentsPage />} />
-        </Route>
-        <Route path="/editor" element={<EditorLayout />}></Route>
-        <Route path="/login" element={<AuthLayout />}>
-          <Route index element={<LoginPage />} />
-          <Route path="register" element={<RegisterPage />} />
-        </Route>
-        <Route path="/home" element={<HomePage />}>
-          <Route index element={<HomePage />} />
-        </Route>
+      <Suspense fallback={<>Loading...</>}>
+        <Routes>
+          <Route path="/" element={<DashboardLayout />}>
+            <Route path="/" element={<Navigate replace to="/" />} />
+            <Route path="/" element={<HomePage />} />
+            <Route path="board" element={<BoardPage />} />
+            <Route path="data" element={<DataPage />} />
+            <Route path="metrics" element={<MatricsPage />} />
+            <Route path="segments" element={<SegmentsPage />} />
+          </Route>
+          <Route path="/editor" element={<EditorLayout />}></Route>
+          <Route path="/login" element={<AuthLayout />}>
+            <Route index element={<LoginPage />} />
+            <Route path="register" element={<RegisterPage />} />
+          </Route>
+          <Route path="/home" element={<HomePage />}>
+            <Route index element={<HomePage />} />
+          </Route>
 
-        <Route path="*" element={<ErrorPage />}></Route>
-      </Routes>
+          <Route path="*" element={<ErrorPage />}></Route>
+        </Routes>
+      </Suspense>
     </div>
   );
 }
