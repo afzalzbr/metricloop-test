@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { getAllBoards } from "../../../Store/Actions/boardsActions";
 import AddNewBoard from "../../Component/Board/AddNewBoard";
 import Board from "./Board";
 
 function BoardPage() {
   const [AddBoard, setAddBoard] = useState(false);
+
+  useEffect(() => {
+    getAllBoards();
+  }, []);
 
   return (
     <div className="BoardPage">
