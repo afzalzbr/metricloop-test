@@ -2,12 +2,12 @@ import axios from "axios";
 
 const instance = axios.create({
   timeout: 1000 * 120, //wait for 120 seconds
-  withCredentials: true,
+  withCredentials: false,
 });
 
 instance.interceptors.request.use(async (req) => {
   // const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  // req.headers["Authorization"] = '6068f7634e0c5a1c2ccb01c3fb21986002937dec';
+  req.headers["Authorization"] = 'Token 6068f7634e0c5a1c2ccb01c3fb21986002937dec';
   // if (req.method === "get") {
   //   req.url = req.url.includes("?") ? req.url + "&user_tz=" + tz : req.url + "?user_tz=" + tz;
   // } else if (req.method === "post") {

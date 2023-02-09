@@ -6,6 +6,7 @@ const initialState = {
   loading: false,
   addLoading: false,
   addFail: false,
+  addSuccess: false,
 }
 
 export const boardsSlice = createSlice({
@@ -28,16 +29,24 @@ export const boardsSlice = createSlice({
       state.loading = false;
     },
     addLoading: (state, action) => {
-      state.addFail = false;
       state.addLoading = true;
+      state.addFail = false;
+      state.addSuccess = false;
     },
     addSuccess: (state, action) => {
       state.addLoading = false;
+      state.addSuccess = true;
       state.boards = [action.payload, ...state.boards];
     },
     addFail: (state, action) => {
       state.addFail = true;
       state.addLoading = false;
+      state.addSuccess = false;
+    },
+    resetAddBoard: (state) => {
+      state.addFail = false;
+      state.addLoading = false;
+      state.addSuccess = false;
     },
     deleteBoard: (state, action) => {
       state.boards = state.boards.filter((board) => board.id !== action.payload)

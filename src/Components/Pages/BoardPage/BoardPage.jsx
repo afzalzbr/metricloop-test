@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { getAllBoards } from "../../../Store/Actions/boardsActions";
 import AddNewBoard from "../../Component/Board/AddNewBoard";
 import Board from "./Board";
 
 function BoardPage() {
   const [AddBoard, setAddBoard] = useState(false);
+
+  const boards = useSelector((state) => state?.boards?.boards);
 
   useEffect(() => {
     getAllBoards();
@@ -39,8 +42,13 @@ function BoardPage() {
         </button>
       </div>
       <div className="container">
-        {[1, 2, 3, 4, 5, 6].map((item) => (
-          <Board key={item} />
+        {boards?.map((board) => (
+          <Board
+            key={board.id}
+            name={board.board_name}
+            description={board.board_type}
+            subText={board.industry}
+          />
         ))}
       </div>
       {/* ----------------- create new board */}

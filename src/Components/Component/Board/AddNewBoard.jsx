@@ -1,29 +1,106 @@
-import { React } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Input, Select } from "antd";
-import SmallCloseIcon from "../../Assets/svgIcon/SmallCloseIcon";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
-function AddNewBoard(props) {
-  function CloseModel() {
+import SmallCloseIcon from "../../Assets/svgIcon/SmallCloseIcon";
+
+import {
+  createNewBoard,
+  resetAddBoard,
+} from "../../../Store/Actions/boardsActions";
+
+const OPTIONS = [
+  {
+    value: "Not Identified",
+    label: "Not Identified",
+  },
+  {
+    value: "Closed",
+    label: "Closed",
+  },
+  {
+    value: "Communicated",
+    label: "Communicated",
+  },
+  {
+    value: "Identified",
+    label: "Identified",
+  },
+  {
+    value: "Resolved",
+    label: "Resolved",
+  },
+  {
+    value: "Cancelled",
+    label: "Cancelled",
+  },
+];
+
+const initialState = {
+  board_name: "",
+  board_type: "",
+  industry: "",
+};
+
+const AddNewBoard = (props) => {
+  const [state, setState] = useState(initialState);
+  const addBoardLoading = useSelector((state) => state.boards.addLoading);
+  const addBoardSuccess = useSelector((state) => state.boards.addSuccess);
+  const addBoardFail = useSelector((state) => state.boards.addFail);
+
+  const CloseModel = () => {
     props.onHide(false);
-  }
+  };
+
   const navigate = useNavigate();
-  function submit() {
-    navigate("/board");
-    CloseModel();
-    Swal.fire({
-      position: "top-end",
-      icon: "success",
-      title: "Board created successfully",
-      showConfirmButton: false,
-      timer: 1500,
-      toast: true,
-    });
-    setTimeout(() => {
-      window.location.reload();
-    }, 1500);
-  }
+
+  const handleOnChange = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    setState((state) => ({ ...state, [name]: value }));
+  };
+
+  const onDropdownChange = (value, name) => {
+    setState((state) => ({ ...state, [name]: value }));
+  };
+
+  const handleSubmit = () => {
+    createNewBoard(state);
+  };
+
+  useEffect(() => {
+    if (addBoardSuccess) {
+      CloseModel();
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Board created successfully",
+        showConfirmButton: false,
+        timer: 1500,
+        toast: true,
+      });
+      setTimeout(() => {
+        resetAddBoard();
+      }, 1500);
+      setState(initialState);
+    } else if (addBoardFail) {
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Board not created",
+        showConfirmButton: false,
+        timer: 1500,
+        toast: true,
+      });
+      setTimeout(() => {
+        resetAddBoard();
+      }, 1500);
+      setState(initialState);
+    }
+  }, [addBoardSuccess, addBoardFail]);
+
   return (
     <Modal
       title=""
@@ -36,7 +113,12 @@ function AddNewBoard(props) {
       <div className="Homepage">
         <div className="AddModel">
           <div className="spantext">Board Name</div>
-          <Input style={{ marginTop: "3%", background: "#EBEBEB" }}></Input>
+          <Input
+            style={{ marginTop: "3%", background: "#EBEBEB" }}
+            value={state.board_name}
+            onChange={handleOnChange}
+            name="board_name"
+          />
           <div className="spantext">Type</div>
           <Select
             showSearch
@@ -50,32 +132,10 @@ function AddNewBoard(props) {
                 .toLowerCase()
                 .localeCompare((optionB?.label ?? "").toLowerCase())
             }
-            options={[
-              {
-                value: "1",
-                label: "Not Identified",
-              },
-              {
-                value: "2",
-                label: "Closed",
-              },
-              {
-                value: "3",
-                label: "Communicated",
-              },
-              {
-                value: "4",
-                label: "Identified",
-              },
-              {
-                value: "5",
-                label: "Resolved",
-              },
-              {
-                value: "6",
-                label: "Cancelled",
-              },
-            ]}
+            options={OPTIONS}
+            value={state.board_type}
+            name="board_type"
+            onChange={(value) => onDropdownChange(value, "board_type")}
           />
           <div className="spantext">
             How are you planning to use Metricloop?
@@ -92,41 +152,27 @@ function AddNewBoard(props) {
                 .toLowerCase()
                 .localeCompare((optionB?.label ?? "").toLowerCase())
             }
-            options={[
-              {
-                value: "1",
-                label: "Not Identified",
-              },
-              {
-                value: "2",
-                label: "Closed",
-              },
-              {
-                value: "3",
-                label: "Communicated",
-              },
-              {
-                value: "4",
-                label: "Identified",
-              },
-              {
-                value: "5",
-                label: "Resolved",
-              },
-              {
-                value: "6",
-                label: "Cancelled",
-              },
-            ]}
+            options={OPTIONS}
+            value={state.industry}
+            name="industry"
+            onChange={(value) => onDropdownChange(value, "industry")}
           />
           <div
             className="d-flex align-center justify-end"
             style={{ marginTop: "11%" }}
           >
-            <button className=" btn-primary cancelbtn" onClick={CloseModel}>
+            <button
+              disabled={addBoardLoading}
+              className="btn-primary cancelbtn"
+              onClick={CloseModel}
+            >
               Cancel
             </button>
-            <button className="btn-primary submit" onClick={submit}>
+            <button
+              className="btn-primary submit"
+              disabled={addBoardLoading}
+              onClick={handleSubmit}
+            >
               Create new board
             </button>
           </div>
@@ -134,6 +180,6 @@ function AddNewBoard(props) {
       </div>
     </Modal>
   );
-}
+};
 
 export default AddNewBoard;

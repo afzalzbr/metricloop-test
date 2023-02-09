@@ -1,6 +1,6 @@
 import { actions as boardActions } from '../Slices/boardsSlice';
 import { store } from '../index';
-import { getBoardsService } from '../../Services/BoardsService';
+import { createNewBoardService, getBoardsService } from '../../Services/BoardsService';
 
 const dispatch = store.dispatch;
 
@@ -13,4 +13,22 @@ export const getAllBoards = () => {
     .catch((err) => {
       console.error('getAllBoards error: ', err);
     })
+}
+
+export const createNewBoard = (params) => {
+  dispatch(boardActions.addLoading());
+  createNewBoardService(params)
+    .then((res) => {
+      let { data } = res;
+      console.log('createNewBoard Res: ', res)
+      dispatch(boardActions.addSuccess(data))
+    })
+    .catch((err) => {
+      dispatch(boardActions.addFail())
+      console.error('createNewBoard error: ', err)
+    })
+}
+
+export const resetAddBoard = () => {
+  dispatch(boardActions.resetAddBoard())
 }
