@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { getAllBoards } from "../../../Store/Actions/boardsActions";
+import { getAllBoards } from "../../../store/Actions/boardsActions";
 import AddNewBoard from "../../Component/Board/AddNewBoard";
 import Board from "./Board";
 

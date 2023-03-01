@@ -9,7 +9,7 @@ import SmallCloseIcon from "../../Assets/svgIcon/SmallCloseIcon";
 import {
   createNewBoard,
   resetAddBoard,
-} from "../../../Store/Actions/boardsActions";
+} from "../../../store/Actions/boardsActions";
 
 const OPTIONS = [
   {
