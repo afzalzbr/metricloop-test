@@ -12,8 +12,8 @@ const { Header, Content } = Layout;
 
 function DashboardLayout() {
   const navigate = useNavigate();
-  const [customDropdown, setcustomDropdown] = useState(false);
-  const [CurrentUrl] = useState(window.location.pathname);
+  const [customDropdown, setCustomDropdown] = useState(false);
+  const CURRENT_URL = window.location.pathname;
 
   return (
     <Layout>
@@ -26,7 +26,7 @@ function DashboardLayout() {
               navigate("/board");
             }}
           >
-            <MatricLoopLogoIcon></MatricLoopLogoIcon>
+            <MatricLoopLogoIcon />
           </button>
         </div>
         <div style={{ position: "relative" }}>
@@ -34,20 +34,16 @@ function DashboardLayout() {
             className="iconButton"
             style={{ marginTop: "1.6rem" }}
             onClick={() =>
-              setcustomDropdown((customDropdown) => !customDropdown)
+              setCustomDropdown((customDropdown) => !customDropdown)
             }
           >
-            <PersonIcon></PersonIcon>
+            <PersonIcon />
           </button>
-          {customDropdown ? <AccountMenu></AccountMenu> : null}
+          {customDropdown ? <AccountMenu /> : null}
         </div>
       </Header>
       <Content>
-        {CurrentUrl === "/" ? (
-          <HomePage></HomePage>
-        ) : (
-          <DashboardDesign></DashboardDesign>
-        )}
+        {CURRENT_URL === "/" ? <HomePage /> : <DashboardDesign />}
       </Content>
     </Layout>
   );

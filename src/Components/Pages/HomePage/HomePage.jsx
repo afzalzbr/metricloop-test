@@ -1,8 +1,10 @@
 import { React, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AddNewBoard from "../../Component/Board/AddNewBoard";
 
 function HomePage() {
   const [AddBoard, setAddBoard] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div className="Homepage">
@@ -21,6 +23,9 @@ function HomePage() {
       {/* ---------------- Create New Board */}
       <AddNewBoard
         show={AddBoard}
+        // onSuccess={() => {
+        //   navigate("/board");
+        // }}
         onHide={() => {
           setAddBoard(false);
         }}

@@ -17,6 +17,7 @@ import DiamondFlowChartIcon from "../../Assets/svgIcon/FlowchartIcon/DiamondFlow
 import ShareModel from "../../Component/Editor/ShareModel/ShareModel";
 import EditorView from "../../Component/Editor/editorView/EditorView";
 import DataSegmentArea from "../../Component/Editor/DataSegmentArea/DataSegmentArea";
+import FlowCanvas from "../../Component/Canvas";
 
 const { Sider, Content, Header } = Layout;
 
@@ -46,7 +47,7 @@ function EditorPage() {
   return (
     <div>
       <Layout className="EditorLayoutStyle">
-        <Sider className="editorSidebar">
+        <Sider className="editorSidebar" style={{ display: "none" }}>
           <Menu className="bg-transparent ToolMenu" mode="inline">
             <div className="customTogglebtn">
               <button
@@ -568,13 +569,14 @@ function EditorPage() {
           </Header>
           <Content
             style={{
-              margin: "24px 16px",
-              padding: 24,
-              minHeight: "calc(100vh - 113px)",
+              // margin: "24px 16px",
+              padding: 45,
+              minHeight: "calc(100vh - 129px)",
             }}
           >
-            <div style={{ textAlign: "left" }}>
-              {DataSegment ? (
+            <div style={{ textAlign: "left", width: "100%", height: "100%" }}>
+              <FlowCanvas />
+              {/* {DataSegment ? (
                 <div style={{ textAlign: "left" }}>
                   <DataSegmentArea></DataSegmentArea>
                 </div>
@@ -585,7 +587,7 @@ function EditorPage() {
                   impedit laboriosam deserunt, temporibus esse, labore illo quod
                   in sint rerum omnis?
                 </div>
-              )}
+              )} */}
             </div>
           </Content>
         </Layout>

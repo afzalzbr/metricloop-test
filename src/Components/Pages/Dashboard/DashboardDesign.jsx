@@ -91,7 +91,7 @@ function DashboardDesign() {
           }}
         >
           <div style={{ display: "flow-root" }}>
-            <Outlet></Outlet>
+            <Outlet />
           </div>
         </Content>
       </Layout>

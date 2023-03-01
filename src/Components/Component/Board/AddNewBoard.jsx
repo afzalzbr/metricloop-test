@@ -67,11 +67,20 @@ const AddNewBoard = (props) => {
   };
 
   const handleSubmit = () => {
-    createNewBoard(state);
+    createNewBoard(state, redirectToBoards);
+    navigate("/board");
+  };
+
+  const redirectToBoards = () => {
+    // let route = window.location.pathname;
+    // if (route === "/") {
+    //   navigate("/board");
+    // }
   };
 
   useEffect(() => {
     if (addBoardSuccess) {
+      navigate("/board");
       CloseModel();
       Swal.fire({
         position: "top-end",
@@ -81,8 +90,10 @@ const AddNewBoard = (props) => {
         timer: 1500,
         toast: true,
       });
+      if (props?.onSuccess) props?.onSuccess();
       setTimeout(() => {
         resetAddBoard();
+        CloseModel();
       }, 1500);
       setState(initialState);
     } else if (addBoardFail) {

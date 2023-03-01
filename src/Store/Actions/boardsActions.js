@@ -9,19 +9,23 @@ export const getAllBoards = () => {
   getBoardsService()
     .then((res) => {
       console.log('getAllBoards response: ', res)
+      dispatch(boardActions.loadSuccess(res.data));
     })
     .catch((err) => {
       console.error('getAllBoards error: ', err);
     })
 }
 
-export const createNewBoard = (params) => {
+export const createNewBoard = (params, callback) => {
   dispatch(boardActions.addLoading());
   createNewBoardService(params)
     .then((res) => {
       let { data } = res;
       console.log('createNewBoard Res: ', res)
-      dispatch(boardActions.addSuccess(data))
+      dispatch(boardActions.addSuccess(data));
+      if (callback) {
+        callback();
+      }
     })
     .catch((err) => {
       dispatch(boardActions.addFail())

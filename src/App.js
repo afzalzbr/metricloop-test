@@ -2,7 +2,7 @@ import React, { Suspense, lazy, } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import "./App.css";
 import AcceptAuthCode from "./Components/Pages/Auth/Google/GoogleAuthAccept";
-import GoogleAuthPage from "./sections/@dashboard/googleAuth";
+import GoogleAuthPage from "./Components/Pages/Auth/Google/GoogleAuth";
 
 const AuthLayout = lazy(() => import('./Components/Layout/AuthLayout'));
 const DashboardLayout = lazy(() => import('./Components/Layout/DashboardLayout'));
@@ -23,14 +23,14 @@ function App() {
       <Suspense fallback={<>Loading...</>}>
         <Routes>
           <Route path="/" element={<DashboardLayout />}>
-            <Route path="/" element={<Navigate replace to="/" />} />
-            <Route path="/" element={<HomePage />} />
+            {/* <Route path="/" element={<Navigate replace to="/" />} /> */}
             <Route path="board" element={<BoardPage />} />
             <Route path="data" element={<DataPage />} />
             <Route path="metrics" element={<MatricsPage />} />
             <Route path="segments" element={<SegmentsPage />} />
             <Route path="google" element={<GoogleAuthPage />} />
             <Route path="google-auth" element={<AcceptAuthCode />} />
+            <Route path="/" element={<HomePage />} />
           </Route>
           <Route path="/editor" element={<EditorLayout />}></Route>
           <Route path="/login" element={<AuthLayout />}>
