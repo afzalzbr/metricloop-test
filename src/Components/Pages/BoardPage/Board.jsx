@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import bImg from "../../Assets/images/pic1.png";
 
 const initial = {
+  id: 0,
   superText: "Rootpointers",
   name: "IT Soluions ...",
   description: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo animi
@@ -22,7 +23,7 @@ const initial = {
 const Board = (props) => {
   const navigate = useNavigate();
   function GoToEditorBoard() {
-    navigate("/editor");
+    navigate("/editor?board_id=" + props?.id);
   }
 
   return (

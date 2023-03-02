@@ -45,19 +45,20 @@ function BoardPage() {
         {boards?.map((board) => (
           <Board
             key={board.id}
+            id={board.id}
             name={board.board_name}
             description={board.board_type}
             subText={board.industry}
           />
         ))}
       </div>
-      {/* ----------------- create new board */}
+      {/* ----------------- create new board ------------------ */}
       <AddNewBoard
         show={AddBoard}
         onHide={() => {
           setAddBoard(false);
         }}
-      ></AddNewBoard>
+      />
     </div>
   );
 }

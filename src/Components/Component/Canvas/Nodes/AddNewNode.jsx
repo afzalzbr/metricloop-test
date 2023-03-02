@@ -1,55 +1,40 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Input, Select } from "antd";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
-import SmallCloseIcon from "../../Assets/svgIcon/SmallCloseIcon";
+import SmallCloseIcon from "../../../Assets/svgIcon/SmallCloseIcon";
 
-import {
-  createNewBoard,
-  resetAddBoard,
-} from "../../../store/Actions/boardsActions";
+import { resetAddNode } from "../../../../store/Actions/editorActions";
 
 const OPTIONS = [
   {
+    value: "start",
+    label: "State Node",
+  },
+  {
     value: "simple",
-    label: "Simple Board",
-  },
-  {
-    value: "analytics",
-    label: "Analytics Board",
-  },
-];
-
-const OPTIONS_USE = [
-  {
-    value: "testing",
-    label: "Testing purpose",
-  },
-  {
-    value: "professional",
-    label: "Professional purpose",
+    label: "Simple Node",
   },
 ];
 
 const initialState = {
-  board_name: "",
-  board_type: "",
-  industry: "",
+  node_name: "",
+  node_style: "",
+  node_description: "",
 };
 
-const AddNewBoard = (props) => {
+const AddNewNode = (props) => {
+  const { onCreateNode, show, onHide } = props;
   const [state, setState] = useState(initialState);
-  const addBoardLoading = useSelector((state) => state.boards.addLoading);
-  const addBoardSuccess = useSelector((state) => state.boards.addSuccess);
-  const addBoardFail = useSelector((state) => state.boards.addFail);
+  const [error, setError] = useState(false);
+  const addNodeLoading = useSelector((state) => state.editor.addNode.loading);
+  const addNodeSuccess = useSelector((state) => state.editor.addNode.success);
+  const addNodeFail = useSelector((state) => state.editor.addNode.fail);
 
   const CloseModel = () => {
-    props.onHide(false);
+    onHide && onHide();
   };
-
-  const navigate = useNavigate();
 
   const handleOnChange = (e) => {
     let name = e.target.name;
@@ -62,36 +47,32 @@ const AddNewBoard = (props) => {
   };
 
   const handleSubmit = () => {
-    createNewBoard(state, redirectToBoards);
-    navigate("/board");
-  };
-
-  const redirectToBoards = () => {
-    // let route = window.location.pathname;
-    // if (route === "/") {
-    //   navigate("/board");
-    // }
+    console.log("state", state);
+    if (state.node_name === "" || state.node_style === "") {
+      setError(true);
+      return;
+    }
+    if (onCreateNode) onCreateNode({ ...state });
   };
 
   useEffect(() => {
-    if (addBoardSuccess) {
-      navigate("/board");
+    if (addNodeSuccess) {
       CloseModel();
       Swal.fire({
         position: "top-end",
         icon: "success",
-        title: "Board created successfully",
+        title: "Node created successfully",
         showConfirmButton: false,
         timer: 1500,
         toast: true,
       });
       if (props?.onSuccess) props?.onSuccess();
       setTimeout(() => {
-        resetAddBoard();
+        resetAddNode();
         CloseModel();
       }, 1500);
       setState(initialState);
-    } else if (addBoardFail) {
+    } else if (addNodeFail) {
       Swal.fire({
         position: "top-end",
         icon: "success",
@@ -101,16 +82,16 @@ const AddNewBoard = (props) => {
         toast: true,
       });
       setTimeout(() => {
-        resetAddBoard();
+        resetAddNode();
       }, 1500);
       setState(initialState);
     }
-  }, [addBoardSuccess, addBoardFail]);
+  }, [addNodeLoading, addNodeFail]);
 
   return (
     <Modal
       title=""
-      open={props.show}
+      open={show}
       centered
       closeIcon={<SmallCloseIcon />}
       onCancel={CloseModel}
@@ -118,12 +99,13 @@ const AddNewBoard = (props) => {
     >
       <div className="Homepage">
         <div className="AddModel">
-          <div className="spantext">Board Name</div>
+          {error && <div style={{ color: "red" }}>Enter data the fields!</div>}
+          <div className="spantext">Node Name</div>
           <Input
             style={{ marginTop: "3%", background: "#EBEBEB" }}
-            value={state.board_name}
+            value={state.node_name}
             onChange={handleOnChange}
-            name="board_name"
+            name="node_name"
           />
           <div className="spantext">Type</div>
           <Select
@@ -139,36 +121,16 @@ const AddNewBoard = (props) => {
                 .localeCompare((optionB?.label ?? "").toLowerCase())
             }
             options={OPTIONS}
-            value={state.board_type}
-            name="board_type"
-            onChange={(value) => onDropdownChange(value, "board_type")}
-          />
-          <div className="spantext">
-            How are you planning to use Metricloop?
-          </div>
-          <Select
-            showSearch
-            style={{ width: "100%", marginTop: "3%" }}
-            optionFilterProp="children"
-            filterOption={(input, option) =>
-              (option?.label ?? "").includes(input)
-            }
-            filterSort={(optionA, optionB) =>
-              (optionA?.label ?? "")
-                .toLowerCase()
-                .localeCompare((optionB?.label ?? "").toLowerCase())
-            }
-            options={OPTIONS_USE}
-            value={state.industry}
-            name="industry"
-            onChange={(value) => onDropdownChange(value, "industry")}
+            value={state.node_style}
+            name="node_style"
+            onChange={(value) => onDropdownChange(value, "node_style")}
           />
           <div
             className="d-flex align-center justify-end"
             style={{ marginTop: "11%" }}
           >
             <button
-              disabled={addBoardLoading}
+              disabled={addNodeLoading}
               className="btn-primary cancelbtn"
               onClick={CloseModel}
             >
@@ -176,10 +138,10 @@ const AddNewBoard = (props) => {
             </button>
             <button
               className="btn-primary submit"
-              disabled={addBoardLoading}
+              disabled={addNodeLoading}
               onClick={handleSubmit}
             >
-              Create new board
+              Create new node
             </button>
           </div>
         </div>
@@ -188,4 +150,4 @@ const AddNewBoard = (props) => {
   );
 };
 
-export default AddNewBoard;
+export default AddNewNode;

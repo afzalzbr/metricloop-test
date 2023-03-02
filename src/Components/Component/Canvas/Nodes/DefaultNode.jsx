@@ -149,7 +149,7 @@ const DefaultNode = ({ id, data }) => {
             </Tooltip>
           </div>
         </Space>
-        {[1].map((item) => (
+        {/* {[1].map((item) => (
           <div width="100%">
             <Space
               container
@@ -217,7 +217,7 @@ const DefaultNode = ({ id, data }) => {
               </Space>
             </Space>
           </div>
-        ))}
+        ))} */}
       </Space>
       {/* Handles */}
       <CustomHandle

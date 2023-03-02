@@ -17,6 +17,11 @@ import CustomNode from "./Nodes/CustomNode";
 import "reactflow/dist/style.css";
 import "./Styles/overview.css";
 import DefaultNode from "./Nodes/DefaultNode";
+import AddNewNode from "./Nodes/AddNewNode";
+import {
+  createNewNodeInBoard,
+  resetAddNode,
+} from "../../../store/Actions/editorActions";
 
 const nodeTypes = {
   custom: CustomNode,
@@ -31,12 +36,14 @@ const onInit = (reactFlowInstance) =>
   console.log("flow loaded:", reactFlowInstance);
 
 const FlowCanvas = () => {
+  const [showAddNodeModal, setShowAddNodeModal] = React.useState(false);
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const onConnect = useCallback(
     (params) => setEdges((eds) => addEdge(params, eds)),
     []
   );
+  const query = new URLSearchParams(window.location.search);
 
   // we are using a bit of a shortcut here to adjust the edge type
   // this could also be done with a custom edge for example
@@ -64,14 +71,14 @@ const FlowCanvas = () => {
     { value: "smoothstep", label: "Smooth Edge" },
   ];
 
-  const addNewNode = () => {
+  const addNewNode = ({ node_name, node_style }) => {
     let newId = nodes.length + 1;
     const newNode = {
       id: `${newId}`,
       type: "custom2",
       position: { x: 0, y: 0 },
       data: {
-        label: `New Node ${newId}`,
+        label: `${node_name}`,
         handleIds: [
           `handle-${newId}-1`,
           `handle-${newId}-2`,
@@ -81,7 +88,23 @@ const FlowCanvas = () => {
       },
       className: "default-node",
     };
-    setNodes((prevNodes) => [...prevNodes, newNode]);
+
+    createNewNodeInBoard({
+      node_name,
+      node_style,
+      board_id: query.get("board_id"),
+      node_data: JSON.stringify(newNode),
+    })
+      .then((res) => {
+        console.log("res: ", res);
+        setNodes((prevNodes) => [...prevNodes, newNode]);
+        setShowAddNodeModal(false);
+      })
+      .catch((err) => {
+        console.log("err: ", err);
+        setNodes((prevNodes) => [...prevNodes, newNode]);
+        setShowAddNodeModal(false);
+      });
   };
 
   console.log("nodes: ", nodes);
@@ -112,10 +135,7 @@ const FlowCanvas = () => {
         <div>
           <button
             className="node-add-button"
-            onClick={() => {
-              addNewNode();
-              // setViewModel(true);
-            }}
+            onClick={() => setShowAddNodeModal(true)}
             style={{}}
           >
             Add Node
@@ -134,6 +154,15 @@ const FlowCanvas = () => {
       <MiniMap style={minimapStyle} zoomable pannable />
       <Controls />
       <Background color="#aaa" gap={16} />
+      <AddNewNode
+        show={showAddNodeModal}
+        onHide={() => {
+          setShowAddNodeModal(false);
+          resetAddNode();
+        }}
+        onCreateNode={addNewNode}
+        boardId={query.get("board_id")}
+      />
     </ReactFlow>
   );
 };
