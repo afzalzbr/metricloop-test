@@ -5,6 +5,8 @@ const initialState = {
   totalEdges: 0,
   nodes: [],
   edges: [],
+  nodesGraph: [],
+  edgesGraph: [],
   loading: false,
   addNode: {
     loading: false,
@@ -32,8 +34,8 @@ export const editorSlice = createSlice({
       // doesn't actually mutate the state because it uses the Immer library,
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes
-      state.nodes = [...action.payload];
-
+      state.nodes = [...action?.payload];
+      state.nodesGraph = [...action?.payload?.filter((node) => node?.node_data).map((node) => JSON.parse(node?.node_data))];
       state.totalNodes = action.payload.length;
       state.loading = false;
     },

@@ -6,7 +6,7 @@ const dispatch = store.dispatch;
 
 export const getAllNodesOfBoard = (id) => {
   dispatch(editorActions.loadNodes());
-  getNodesUsingBoardIdService(id)
+  return getNodesUsingBoardIdService(id)
     .then((res) => {
       console.log('getAll nodes of a board response: ', res)
       dispatch(editorActions.loadNodesSuccess(res.data));

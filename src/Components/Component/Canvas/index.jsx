@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import ReactFlow, {
   addEdge,
   MiniMap,
@@ -20,8 +20,10 @@ import DefaultNode from "./Nodes/DefaultNode";
 import AddNewNode from "./Nodes/AddNewNode";
 import {
   createNewNodeInBoard,
+  getAllNodesOfBoard,
   resetAddNode,
 } from "../../../store/Actions/editorActions";
+import { useSelector } from "react-redux";
 
 const nodeTypes = {
   custom: CustomNode,
@@ -37,13 +39,16 @@ const onInit = (reactFlowInstance) =>
 
 const FlowCanvas = () => {
   const [showAddNodeModal, setShowAddNodeModal] = React.useState(false);
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const nodeData = useSelector((state) => state.editor.nodesGraph);
+  const [nodes, setNodes, onNodesChange] = useNodesState(nodeData);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const onConnect = useCallback(
     (params) => setEdges((eds) => addEdge(params, eds)),
     []
   );
   const query = new URLSearchParams(window.location.search);
+
+  const boardId = query.get("board_id");
 
   // we are using a bit of a shortcut here to adjust the edge type
   // this could also be done with a custom edge for example
@@ -92,7 +97,7 @@ const FlowCanvas = () => {
     createNewNodeInBoard({
       node_name,
       node_style,
-      board_id: query.get("board_id"),
+      board_id: boardId,
       node_data: JSON.stringify(newNode),
     })
       .then((res) => {
@@ -109,6 +114,18 @@ const FlowCanvas = () => {
 
   console.log("nodes: ", nodes);
   console.log("edges: ", edges);
+
+  useEffect(() => {
+    getAllNodesOfBoard(boardId);
+    return () => {};
+  }, []);
+
+  useEffect(() => {
+    if (nodeData && nodes.length == 0) {
+      console.log("nodeData: ", nodeData);
+      setNodes(nodeData);
+    }
+  }, [nodeData]);
 
   return (
     <ReactFlow
