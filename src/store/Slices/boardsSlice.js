@@ -15,6 +15,9 @@ export const boardsSlice = createSlice({
   reducers: {
     load: (state, action) => {
       state.loading = true;
+      // for now let's reset the boards when we load them
+      state.boards = [];
+      state.totalBoards = 0;
     },
     loadSuccess: (state, action) => {
       // Redux Toolkit allows us to write "mutating" logic in reducers. It

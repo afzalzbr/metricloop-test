@@ -18,7 +18,7 @@ export const getAllBoards = () => {
 
 export const createNewBoard = (params, callback) => {
   dispatch(boardActions.addLoading());
-  createNewBoardService(params)
+  return createNewBoardService(params)
     .then((res) => {
       let { data } = res;
       console.log('createNewBoard Res: ', res)
@@ -28,8 +28,8 @@ export const createNewBoard = (params, callback) => {
       }
     })
     .catch((err) => {
-      // dispatch(boardActions.addFail())
-      dispatch(boardActions.addSuccess({ ...params, id: Math.random() }));
+      dispatch(boardActions.addFail())
+      // dispatch(boardActions.addSuccess({ ...params, id: Math.random() }));
       console.error('createNewBoard error: ', err)
     })
 }

@@ -62,8 +62,11 @@ const AddNewBoard = (props) => {
   };
 
   const handleSubmit = () => {
-    createNewBoard(state, redirectToBoards);
-    navigate("/board");
+    createNewBoard(state).then(() => {
+      if (window.location.pathname === "/") {
+        navigate("/board");
+      }
+    });
   };
 
   const redirectToBoards = () => {
