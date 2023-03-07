@@ -34,7 +34,7 @@ export const editorSlice = createSlice({
       // doesn't actually mutate the state because it uses the Immer library,
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes
-      state.nodes = [...action?.payload];
+      state.nodes = [...action?.payload?.map((node) => ({ ...node, node_data: JSON.parse(node?.node_data) }))];
       state.nodesGraph = [...action?.payload?.filter((node) => node?.node_data).map((node) => JSON.parse(node?.node_data))];
       state.totalNodes = action.payload.length;
       state.loading = false;
@@ -49,7 +49,8 @@ export const editorSlice = createSlice({
     },
     loadEdgesSuccess: (state, action) => {
       // Redux Toolkit allows us to write "mutating" logic in reducers. It
-      state.edges = [...action.payload];
+      state.edges = [...action?.payload?.map((edge) => ({ ...edge, edge_data: JSON.parse(edge?.edge_data) }))];
+      state.edgesGraph = [...action?.payload?.filter((edge) => edge?.edge_data).map((edge) => JSON.parse(edge?.edge_data))];
       state.totalEdges = action.payload.length;
       state.loading = false;
     },
@@ -67,7 +68,8 @@ export const editorSlice = createSlice({
       state.addNode.loading = false;
       state.addNode.fail = false;
       state.addNode.success = true;
-      state.nodes = [...state.nodes, action.payload];
+      state.nodes = [...state.nodes, { ...action.payload, node_data: JSON.parse(action.payload.node_data) }];
+      state.nodesGraph = [...state.nodesGraph, JSON.parse(action.payload.node_data)]
     },
     addNodeFail: (state, action) => {
       state.addNode.fail = true;
@@ -90,7 +92,8 @@ export const editorSlice = createSlice({
       state.addEdge.loading = false;
       state.addEdge.fail = false;
       state.addEdge.success = true;
-      state.edges = [...state.edges, action.payload];
+      state.edges = [...state.edges, { ...action.payload, edge_data: JSON.parse(action.payload?.edge_data) }];
+      state.edgesGraph = [...state.edgesGraph, JSON.parse(action.payload?.edge_data)];
     },
     addEdgeFail: (state, action) => {
       state.addEdge.fail = true;

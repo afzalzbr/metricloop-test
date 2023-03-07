@@ -19,9 +19,12 @@ import "./Styles/overview.css";
 import DefaultNode from "./Nodes/DefaultNode";
 import AddNewNode from "./Nodes/AddNewNode";
 import {
+  createNewEdgeInBoard,
   createNewNodeInBoard,
+  getAllEdgesOfBoard,
   getAllNodesOfBoard,
   resetAddNode,
+  updateNodeInBoard,
 } from "../../../store/Actions/editorActions";
 import { useSelector } from "react-redux";
 
@@ -33,18 +36,35 @@ const nodeTypes = {
 const minimapStyle = {
   height: 120,
 };
-
+const defaultViewport = { x: 0, y: 0, zoom: 1 };
 const onInit = (reactFlowInstance) =>
   console.log("flow loaded:", reactFlowInstance);
 
 const FlowCanvas = () => {
   const [showAddNodeModal, setShowAddNodeModal] = React.useState(false);
   const nodeData = useSelector((state) => state.editor.nodesGraph);
+  const edgeData = useSelector((state) => state.editor.edgesGraph);
+  const nodeDB = useSelector((state) => state.editor.nodes);
+  const edgeDB = useSelector((state) => state.editor.edges);
   const [nodes, setNodes, onNodesChange] = useNodesState(nodeData);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(edgeData);
+
   const onConnect = useCallback(
-    (params) => setEdges((eds) => addEdge(params, eds)),
-    []
+    (params) => {
+      setEdges((eds) => addEdge(params, eds));
+      let leftNode = nodeDB.find((n) => n.node_id == params.source);
+      let rightNode = nodeDB.find((n) => n.node_id == params.target);
+      let leftNodeID = leftNode?.id;
+      let rightNodeID = rightNode?.id;
+      createNewEdgeInBoard({
+        board_id: boardId,
+        left_node: leftNodeID,
+        right_node: rightNodeID,
+        edge_data: JSON.stringify(params),
+        type: "simple",
+      });
+    },
+    [nodeDB]
   );
   const query = new URLSearchParams(window.location.search);
 
@@ -95,6 +115,7 @@ const FlowCanvas = () => {
     };
 
     createNewNodeInBoard({
+      node_id: newId,
       node_name,
       node_style,
       board_id: boardId,
@@ -112,32 +133,49 @@ const FlowCanvas = () => {
       });
   };
 
-  console.log("nodes: ", nodes);
-  console.log("edges: ", edges);
-
   useEffect(() => {
     getAllNodesOfBoard(boardId);
+    getAllEdgesOfBoard(boardId);
     return () => {};
   }, []);
 
   useEffect(() => {
     if (nodeData && nodes.length == 0) {
-      console.log("nodeData: ", nodeData);
       setNodes(nodeData);
     }
-  }, [nodeData]);
+    if (edgeData && edges.length == 0) {
+      setEdges(edgeData);
+    }
+  }, [nodeData, edgeData]);
+
+  const onNodeChangesCustom = (newNodes) => {
+    let node = newNodes[0];
+    if (node && node.dragging) {
+      let currentNode = nodes.find((n) => n.id === node.id);
+      currentNode.position = node.position;
+      let nodeDataInDB = nodeDB.find((n) => n.node_id == node.id);
+      let newNodeDataInDB = { ...nodeDataInDB };
+      newNodeDataInDB.node_data = JSON.stringify(currentNode);
+      delete newNodeDataInDB.positionAbsolute;
+      delete newNodeDataInDB.selected;
+      delete newNodeDataInDB.dragging;
+      updateNodeInBoard(newNodeDataInDB);
+    }
+    onNodesChange(newNodes);
+  };
 
   return (
     <ReactFlow
       nodes={nodes}
       edges={edgesWithUpdatedTypes}
-      onNodesChange={onNodesChange}
+      onNodesChange={onNodeChangesCustom}
       onEdgesChange={onEdgesChange}
       onConnect={onConnect}
       onInit={onInit}
       fitView
       attributionPosition="top-right"
       nodeTypes={nodeTypes}
+      defaultViewport={defaultViewport}
     >
       <div className="top-bar">
         <div className="node-type-select-wrapper">

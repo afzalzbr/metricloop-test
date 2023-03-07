@@ -1,8 +1,12 @@
 import { actions as editorActions } from '../Slices/editorSlice';
 import { store } from '../index';
-import { createNewNodeInBoardService, getNodesUsingBoardIdService } from '../../Services/EditorService';
+import { createNewEdgeInBoardService, createNewNodeInBoardService, getEdgesUsingBoardIdService, getEdgesUsingIdService, getNodesUsingBoardIdService, updateNodeInBoardService } from '../../Services/EditorService';
 
 const dispatch = store.dispatch;
+
+/********************************
+*             Nodes             *
+*********************************/
 
 export const getAllNodesOfBoard = (id) => {
   dispatch(editorActions.loadNodes());
@@ -17,19 +21,6 @@ export const getAllNodesOfBoard = (id) => {
     })
 }
 
-export const getAllEdgesOfBoard = (id) => {
-  dispatch(editorActions.loadEdges());
-  getNodesUsingBoardIdService(id)
-    .then((res) => {
-      console.log('getAll edges of a board response: ', res)
-      dispatch(editorActions.loadEdgesSuccess(res.data));
-    })
-    .catch((err) => {
-      dispatch(editorActions.loadEdgesFail());
-      console.error('getAll edges of error: ', err);
-    })
-}
-
 export const createNewNodeInBoard = (params) => {
   dispatch(editorActions.addNodeLoading());
   console.log('create New node in a Board params: ', params)
@@ -37,7 +28,7 @@ export const createNewNodeInBoard = (params) => {
     .then((res) => {
       let { data } = res;
       console.log('create New node in a Board Res: ', res)
-      dispatch(editorActions.addEdgeSuccess(data));
+      dispatch(editorActions.addNodeSuccess(data));
       return res;
     })
     .catch((err) => {
@@ -47,22 +38,58 @@ export const createNewNodeInBoard = (params) => {
     })
 }
 
-export const createNewEdgeInBoard = (params) => {
-  dispatch(editorActions.addEdgeLoading());
-  return createNewEdgeInBoard(params)
+export const updateNodeInBoard = (params) => {
+  // dispatch(editorActions.addNodeLoading());
+  // console.log('update node in a Board params: ', params)
+  return updateNodeInBoardService(params)
     .then((res) => {
-      let { data } = res;
-      console.log('create New edge in a Board Res: ', res)
-      dispatch(editorActions.addEdgeSuccess(data));
+      // let { data } = res;
+      // console.log('update node in a Board Res: ', res)
+      // dispatch(editorActions.addEdgeSuccess(data));
+      return res;
     })
     .catch((err) => {
-      dispatch(editorActions.addEdgeFail())
-      console.error('createNewBoard error: ', err)
+      // dispatch(editorActions.addNodeFail())
+      console.error('update node error: ', err)
+      return err;
     })
 }
 
 export const resetAddNode = () => {
   dispatch(editorActions.resetAddNode())
+}
+
+/********************************
+*             Edges             *
+*********************************/
+
+export const getAllEdgesOfBoard = (id) => {
+  dispatch(editorActions.loadEdges());
+  return getEdgesUsingBoardIdService(id)
+    .then((res) => {
+      console.log('getAll edges of a board response: ', res)
+      dispatch(editorActions.loadEdgesSuccess(res.data));
+      return res;
+    })
+    .catch((err) => {
+      dispatch(editorActions.loadEdgesFail());
+      console.error('getAll edges of error: ', err);
+    })
+}
+
+export const createNewEdgeInBoard = (params) => {
+  dispatch(editorActions.addEdgeLoading());
+  return createNewEdgeInBoardService(params)
+    .then((res) => {
+      let { data } = res;
+      console.log('create New edge in a Board Res: ', res)
+      dispatch(editorActions.addEdgeSuccess(data));
+      return res;
+    })
+    .catch((err) => {
+      dispatch(editorActions.addEdgeFail())
+      console.error('createNewBoard error: ', err)
+    })
 }
 
 export const resetAddEdge = () => {
