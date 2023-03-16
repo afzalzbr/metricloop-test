@@ -7,7 +7,7 @@ const instance = axios.create({
 
 instance.interceptors.request.use(async (req) => {
   // const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  req.headers["Authorization"] = 'Token 6068f7634e0c5a1c2ccb01c3fb21986002937dec';
+  req.headers["Authorization"] = 'Token c7e2413b9367b46c40d95b375d27630a92bf55eb';
   // if (req.method === "get") {
   //   req.url = req.url.includes("?") ? req.url + "&user_tz=" + tz : req.url + "?user_tz=" + tz;
   // } else if (req.method === "post") {
