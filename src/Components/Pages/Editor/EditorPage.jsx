@@ -47,7 +47,7 @@ function EditorPage() {
   return (
     <div>
       <Layout className="EditorLayoutStyle">
-        <Sider className="editorSidebar" style={{ display: "none" }}>
+        <Sider className="editorSidebar" style={{}}>
           <Menu className="bg-transparent ToolMenu" mode="inline">
             <div className="customTogglebtn">
               <button

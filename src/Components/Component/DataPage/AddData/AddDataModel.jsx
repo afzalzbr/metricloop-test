@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import { Modal } from "antd";
 import CloseIcon from "../../../Assets/svgIcon/Closeicon";
 import FileIcon from "../../../Assets/svgIcon/FileIcon";
@@ -13,6 +13,13 @@ import VerticalDotsIcon from "../../../Assets/svgIcon/VerticalDotsIcon";
 import { DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 import DeleteDialog from "../../DeleteDialog/DeleteDialog";
 import GoBackButton from "../../../Assets/svgIcon/GoBackButton";
+import {
+  getAllSheets,
+  getSelectedSheetData,
+  getSelectedWorkSheetData,
+} from "../../../../store/Actions/sheetsActions";
+import { useSelector } from "react-redux";
+import TableRow from "./TableRow";
 
 function AddDataModel(props) {
   const [isActive1, SetIsActive1] = useState(false);
@@ -20,23 +27,58 @@ function AddDataModel(props) {
   const [isActive3, SetIsActive3] = useState(false);
   const [isActive4, SetIsActive4] = useState(false);
   const [isActive5, SetIsActive5] = useState(false);
-  const [hidden, setHidden] = useState(true);
   const [ShowTableDetail, setShowTableDetail] = useState(true);
   const [AllDataTableDetail, setAllDataTableDetail] = useState(false);
   const [opendeleteDialog, SetDeleteDialog] = useState(false);
 
+  const sheetsLoading = useSelector((state) => state.sheets.loading);
+  const sheetsReducer = useSelector((state) => state.sheets.sheets);
+  const selectedSheet = useSelector((state) => state.sheets.selectedSheet);
+  const selectedSheetName = useSelector(
+    (state) => state.sheets.selectedSheet?.name
+  );
+  const worksheetsLoading = useSelector(
+    (state) => state.sheets.selectedSheet?.loading
+  );
+  const worksheetsReducer = useSelector(
+    (state) => state.sheets.selectedSheet.worksheets
+  );
+  const selectedWorksheet = useSelector(
+    (state) => state.sheets.selectedSheet.selectedWorkSheet
+  );
+
+  const selectedWorksheetName = useSelector(
+    (state) => state.sheets.selectedSheet.selectedWorkSheet?.name
+  );
+
   function CloseModel() {
     props.onHide(false);
   }
-  function TableDetail() {
+  function TableDetail(sheetId, sheetName) {
+    getSelectedSheetData(sheetId, sheetName);
     setAllDataTableDetail(true);
     setShowTableDetail(false);
-    setHidden(true);
   }
   function GoBackAllTable() {
     setAllDataTableDetail(false);
     setShowTableDetail(true);
   }
+
+  function selectWorkSheet(name) {
+    console.log("selectWorkSheet: ", name);
+    getSelectedWorkSheetData(selectedSheet.id, selectedSheet.name, name);
+  }
+
+  useEffect(() => {
+    getAllSheets();
+
+    return () => {};
+  }, []);
+
+  console.log("selectedSheet", selectedSheet);
+  console.log("sheetsReducer", sheetsReducer);
+  console.log("sheetsLoading", sheetsLoading);
+
   return (
     <div>
       <Modal
@@ -73,6 +115,25 @@ function AddDataModel(props) {
                     </button>
                   </div>
                   <div className="itemsListBox">
+                    {worksheetsLoading
+                      ? "Loading work sheets..."
+                      : worksheetsReducer.map((worksheet) => (
+                          <button
+                            className={
+                              worksheet === selectedWorksheetName
+                                ? " activeListButton"
+                                : "listButton"
+                            }
+                            onClick={() => {
+                              console.log("worksheet", worksheet);
+                              selectWorkSheet(worksheet);
+                            }}
+                          >
+                            {worksheet}
+                          </button>
+                        ))}
+                  </div>
+                  {/* <div className="itemsListBox">
                     <button
                       className={isActive1 ? " activeListButton" : "listButton"}
                       onClick={async () => {
@@ -81,7 +142,6 @@ function AddDataModel(props) {
                         SetIsActive3(false);
                         SetIsActive4(false);
                         SetIsActive5(false);
-
                       }}
                     >
                       Order
@@ -90,11 +150,10 @@ function AddDataModel(props) {
                       className={isActive2 ? " activeListButton" : "listButton"}
                       onClick={async () => {
                         SetIsActive2(() => !isActive2);
-                        SetIsActive1(false);                        
-                        SetIsActive5(false);                        
-                        SetIsActive3(false);                        
-                        SetIsActive4(false);                        
-
+                        SetIsActive1(false);
+                        SetIsActive5(false);
+                        SetIsActive3(false);
+                        SetIsActive4(false);
                       }}
                     >
                       Employees
@@ -135,7 +194,7 @@ function AddDataModel(props) {
                     >
                       Clients2
                     </button>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className="rightBarContent">
@@ -143,8 +202,7 @@ function AddDataModel(props) {
                   <div className="d-flex align-center">
                     <LinkIcon></LinkIcon>
                     <div style={{ marginLeft: "0.7%", fontSize: "20px" }}>
-                      {" "}
-                      Link{" "}
+                      Link
                     </div>
                     <div style={{ marginLeft: "1.6%" }}>
                       <Input
@@ -191,7 +249,16 @@ function AddDataModel(props) {
                         </td>
                       </tr>
                       <tbody>
-                        <tr style={{ borderBottom: "1px solid #C7C7C7" }}>
+                        {sheetsLoading
+                          ? "loading..."
+                          : sheetsReducer.map((sheet) => (
+                              <TableRow
+                                id={sheet.id}
+                                name={sheet.name}
+                                handleDetails={TableDetail}
+                              />
+                            ))}
+                        {/* <tr style={{ borderBottom: "1px solid #C7C7C7" }}>
                           <td
                             style={{
                               width: "40%",
@@ -244,7 +311,6 @@ function AddDataModel(props) {
                               >
                                 <VerticalDotsIcon></VerticalDotsIcon>
                               </button>
-                              {/* ---------------- Dropdown menu */}
                               {!hidden ? (
                                 <div className="customDropDown">
                                   <button
@@ -279,7 +345,7 @@ function AddDataModel(props) {
                               ) : null}
                             </div>
                           </td>
-                        </tr>
+                        </tr> */}
                       </tbody>
                     </table>
                   </div>
@@ -295,16 +361,16 @@ function AddDataModel(props) {
                             className="GoBackButton"
                             onClick={GoBackAllTable}
                           >
-                            <GoBackButton></GoBackButton>
+                            <GoBackButton />
                           </button>
                           <div style={{ marginLeft: "2rem" }}>
-                            <ExcelFile1Icon></ExcelFile1Icon>
+                            <ExcelFile1Icon />
                           </div>
                           <div
                             style={{ marginLeft: "1rem" }}
                             className="heading1"
                           >
-                            Project 1 data
+                            {selectedSheetName}
                           </div>
                         </div>
                       </div>

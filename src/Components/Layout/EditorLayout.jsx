@@ -23,7 +23,7 @@ function EditorLayout() {
               navigate("/board");
             }}
           >
-            <MatricLoopLogoIcon></MatricLoopLogoIcon>
+            <MatricLoopLogoIcon />
           </button>
         </div>
         <div style={{ position: "relative" }}>
@@ -36,11 +36,11 @@ function EditorLayout() {
           >
             <PersonIcon></PersonIcon>
           </button>
-          {customDropdown ? <AccountMenu></AccountMenu> : null}
+          {customDropdown ? <AccountMenu /> : null}
         </div>
       </Header>
       <Content>
-        <EditorPage></EditorPage>
+        <EditorPage />
       </Content>
     </Layout>
   );

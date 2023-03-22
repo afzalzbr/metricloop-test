@@ -1,6 +1,5 @@
 import http from "./HttpService";
 import { BACKEND_URL_EDITORS } from "../Utils/constants";
-import axios from "axios";
 
 let cancelTokenGetAllBoardsService;
 export function getBoardsService() {
