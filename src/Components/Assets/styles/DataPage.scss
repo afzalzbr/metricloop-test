@@ -24,6 +24,10 @@
     font-weight: 400;
     color: rgb(2, 2, 2);
   }
+  .disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
   .AddDialog {
     .TopBar {
       border-bottom: 1px solid #c7c7c7;

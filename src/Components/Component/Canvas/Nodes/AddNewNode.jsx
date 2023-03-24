@@ -9,12 +9,20 @@ import { resetAddNode } from "../../../../store/Actions/editorActions";
 
 const OPTIONS = [
   {
-    value: "start",
-    label: "State Node",
+    value: "standard",
+    label: "Standard",
   },
   {
-    value: "simple",
-    label: "Simple Node",
+    value: "single",
+    label: "Single",
+  },
+  {
+    value: "multi",
+    label: "Multi",
+  },
+  {
+    value: "decision",
+    label: "Decision",
   },
 ];
 

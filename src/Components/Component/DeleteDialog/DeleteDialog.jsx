@@ -9,15 +9,16 @@ function DeleteDialog(props) {
     props.onHide(false);
   }
   function submit() {
-    CloseModel();
-    Swal.fire({
-      position: "top-end",
-      icon: "success",
-      title: "Delete successfully",
-      showConfirmButton: false,
-      timer: 1500,
-      toast: true,
-    });
+    props.onConfirm && props.onConfirm();
+    // CloseModel();
+    // Swal.fire({
+    //   position: "top-end",
+    //   icon: "success",
+    //   title: "Delete successfully",
+    //   showConfirmButton: false,
+    //   timer: 1500,
+    //   toast: true,
+    // });
   }
   return (
     <div className="DeleteModelStyle">
@@ -50,10 +51,16 @@ function DeleteDialog(props) {
             className="d-flex justify-center"
             style={{ marginTop: "7%", marginBottom: "3%" }}
           >
-            <button className="cancelButton" onClick={CloseModel}>
+            <button
+              className={`cancelButton ${props?.loading ? "disabled" : ""}`}
+              onClick={CloseModel}
+            >
               Cancel
             </button>
-            <button className="DeleteButton" onClick={submit}>
+            <button
+              className={`DeleteButton ${props?.loading ? "disabled" : ""}`}
+              onClick={submit}
+            >
               Delete
             </button>
           </div>

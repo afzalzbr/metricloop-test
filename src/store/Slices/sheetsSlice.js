@@ -45,6 +45,15 @@ export const sheetsSlice = createSlice({
     loadWorkSheetsFail: (state) => {
       state.selectedSheet.loading = false;
     },
+    resetSelectedSheet: (state) => {
+      state.selectedSheet.id = '';
+      state.selectedSheet.name = '';
+      state.selectedSheet.worksheets = [];
+      state.selectedSheet.loading = false;
+      state.selectedSheet.selectedWorkSheet.name = '';
+      state.selectedSheet.selectedWorkSheet.data = [];
+      state.selectedSheet.selectedWorkSheet.loading = false;
+    },
     selectWorkSheet: (state, action) => {
       // state.selectedSheet.selectedWorkSheet.id = action.payload.id;
       state.selectedSheet.selectedWorkSheet.name = action.payload.name;

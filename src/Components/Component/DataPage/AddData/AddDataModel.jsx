@@ -1,58 +1,50 @@
 import { React, useEffect, useState } from "react";
-import { Modal } from "antd";
+import { useSelector } from "react-redux";
+import { Modal, Input } from "antd";
+
 import CloseIcon from "../../../Assets/svgIcon/Closeicon";
 import FileIcon from "../../../Assets/svgIcon/FileIcon";
 import ActiveTabBottomLine from "../../../Assets/svgIcon/ActiveTabBottomLine";
-
 import LinkIcon from "../../../Assets/svgIcon/LinkIcon";
-import { Input } from "antd";
 import GridIcon from "../../../Assets/svgIcon/GridIcon";
 import FolderIcon from "../../../Assets/svgIcon/FolderIcon";
 import ExcelFile1Icon from "../../../Assets/svgIcon/ExcelFile1Icon";
-import VerticalDotsIcon from "../../../Assets/svgIcon/VerticalDotsIcon";
-import { DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 import DeleteDialog from "../../DeleteDialog/DeleteDialog";
 import GoBackButton from "../../../Assets/svgIcon/GoBackButton";
+
 import {
   getAllSheets,
   getSelectedSheetData,
   getSelectedWorkSheetData,
+  resetSelectedSheet,
 } from "../../../../store/Actions/sheetsActions";
-import { useSelector } from "react-redux";
+
 import TableRow from "./TableRow";
+import { createNewDataSource } from "../../../../store/Actions/dataSourceActions";
 
 function AddDataModel(props) {
-  const [isActive1, SetIsActive1] = useState(false);
-  const [isActive2, SetIsActive2] = useState(false);
-  const [isActive3, SetIsActive3] = useState(false);
-  const [isActive4, SetIsActive4] = useState(false);
-  const [isActive5, SetIsActive5] = useState(false);
   const [ShowTableDetail, setShowTableDetail] = useState(true);
   const [AllDataTableDetail, setAllDataTableDetail] = useState(false);
-  const [opendeleteDialog, SetDeleteDialog] = useState(false);
+  const [openDeleteDialog, setDeleteDialog] = useState(false);
 
   const sheetsLoading = useSelector((state) => state.sheets.loading);
   const sheetsReducer = useSelector((state) => state.sheets.sheets);
   const selectedSheet = useSelector((state) => state.sheets.selectedSheet);
-  const selectedSheetName = useSelector(
-    (state) => state.sheets.selectedSheet?.name
-  );
-  const worksheetsLoading = useSelector(
-    (state) => state.sheets.selectedSheet?.loading
-  );
-  const worksheetsReducer = useSelector(
-    (state) => state.sheets.selectedSheet.worksheets
-  );
   const selectedWorksheet = useSelector(
     (state) => state.sheets.selectedSheet.selectedWorkSheet
   );
 
-  const selectedWorksheetName = useSelector(
-    (state) => state.sheets.selectedSheet.selectedWorkSheet?.name
-  );
+  const selectedSheetName = selectedSheet?.name;
+  const worksheetsLoading = selectedSheet?.loading;
+  const worksheetsReducer = selectedSheet?.worksheets;
+
+  const selectedWorksheetName = selectedWorksheet?.name;
+  const selectedWorksheetDataLoading = selectedWorksheet?.loading;
+  const selectedWorksheetData = selectedWorksheet?.data;
 
   function CloseModel() {
     props.onHide(false);
+    if (selectedSheetName) GoBackAllTable();
   }
   function TableDetail(sheetId, sheetName) {
     getSelectedSheetData(sheetId, sheetName);
@@ -62,22 +54,31 @@ function AddDataModel(props) {
   function GoBackAllTable() {
     setAllDataTableDetail(false);
     setShowTableDetail(true);
+    resetSelectedSheet();
   }
 
   function selectWorkSheet(name) {
-    console.log("selectWorkSheet: ", name);
     getSelectedWorkSheetData(selectedSheet.id, selectedSheet.name, name);
   }
 
+  const handleAddNew = () => {
+    createNewDataSource(selectedSheetName, selectedSheet.id);
+  };
+
+  useEffect(() => {
+    if (
+      selectedWorksheetData?.length === 0 &&
+      worksheetsReducer?.length > 0 &&
+      selectedSheetName
+    ) {
+      selectWorkSheet(worksheetsReducer[0]);
+    }
+  }, [selectedWorksheetData, worksheetsReducer, selectedSheetName]);
+
   useEffect(() => {
     getAllSheets();
-
     return () => {};
   }, []);
-
-  console.log("selectedSheet", selectedSheet);
-  console.log("sheetsReducer", sheetsReducer);
-  console.log("sheetsLoading", sheetsLoading);
 
   return (
     <div>
@@ -110,7 +111,12 @@ function AddDataModel(props) {
               <div className="leftBarContent">
                 <div className="ToolBox">
                   <div className="d-flex align-center justify-space-between  ">
-                    <button className="Add-btn d-flex align-center justify-center">
+                    <button
+                      className={`Add-btn d-flex align-center justify-center ${
+                        !selectedSheet.id || props.addLoading ? "disabled" : ""
+                      }`}
+                      onClick={handleAddNew}
+                    >
                       Add New
                     </button>
                   </div>
@@ -125,7 +131,6 @@ function AddDataModel(props) {
                                 : "listButton"
                             }
                             onClick={() => {
-                              console.log("worksheet", worksheet);
                               selectWorkSheet(worksheet);
                             }}
                           >
@@ -133,68 +138,6 @@ function AddDataModel(props) {
                           </button>
                         ))}
                   </div>
-                  {/* <div className="itemsListBox">
-                    <button
-                      className={isActive1 ? " activeListButton" : "listButton"}
-                      onClick={async () => {
-                        SetIsActive1(() => !isActive1);
-                        SetIsActive2(false);
-                        SetIsActive3(false);
-                        SetIsActive4(false);
-                        SetIsActive5(false);
-                      }}
-                    >
-                      Order
-                    </button>
-                    <button
-                      className={isActive2 ? " activeListButton" : "listButton"}
-                      onClick={async () => {
-                        SetIsActive2(() => !isActive2);
-                        SetIsActive1(false);
-                        SetIsActive5(false);
-                        SetIsActive3(false);
-                        SetIsActive4(false);
-                      }}
-                    >
-                      Employees
-                    </button>
-                    <button
-                      className={isActive3 ? " activeListButton" : "listButton"}
-                      onClick={async () => {
-                        SetIsActive3(() => !isActive3);
-                        SetIsActive1(false);
-                        SetIsActive2(false);
-                        SetIsActive4(false);
-                        SetIsActive4(false);
-                      }}
-                    >
-                      Clients
-                    </button>
-                    <button
-                      className={isActive4 ? " activeListButton" : "listButton"}
-                      onClick={async () => {
-                        SetIsActive4(() => !isActive4);
-                        SetIsActive1(false);
-                        SetIsActive2(false);
-                        SetIsActive3(false);
-                        SetIsActive5(false);
-                      }}
-                    >
-                      Clients1
-                    </button>
-                    <button
-                      className={isActive5 ? " activeListButton" : "listButton"}
-                      onClick={async () => {
-                        SetIsActive5(() => !isActive5);
-                        SetIsActive1(false);
-                        SetIsActive2(false);
-                        SetIsActive3(false);
-                        SetIsActive4(false);
-                      }}
-                    >
-                      Clients2
-                    </button>
-                  </div> */}
                 </div>
               </div>
               <div className="rightBarContent">
@@ -330,7 +273,7 @@ function AddDataModel(props) {
                                   <button
                                     className="menuBtn"
                                     style={{ marginBottom: "11%" }}
-                                    onClick={() => SetDeleteDialog(true)}
+                                    onClick={() => setDeleteDialog(true)}
                                   >
                                     <div className="d-flex align-center justify-center">
                                       <DeleteOutlined
@@ -374,147 +317,44 @@ function AddDataModel(props) {
                           </div>
                         </div>
                       </div>
-                      <table
-                        style={{
-                          borderCollapse: "collapse",
-                          width: "100%",
-                          marginTop: "3%",
-                          border: "1px solid black",
-                        }}
-                      >
-                        <tr>
-                          <th style={{ width: "5%" }}>
-                            <div className="tableHeading"> #</div>
-                          </th>
-                          <th style={{ width: "11.5%" }}>
-                            <div className="tableHeading"> Name</div>
-                          </th>
-                          <th style={{ width: "11.5%" }}>
-                            <div className="tableHeading"> Address</div>
-                          </th>
-                          <th style={{ width: "11.5%" }}>
-                            <div className="tableHeading"> Location</div>
-                          </th>
-                          <th style={{ width: "11.5%" }}>
-                            <div className="tableHeading"> Email</div>
-                          </th>
-                          <th style={{ width: "11.5%" }}>
-                            <div className="tableHeading"> phone number</div>
-                          </th>
-                          <th style={{ width: "11.5%" }}>
-                            <div className="tableHeading"> Product</div>
-                          </th>
-                          <th style={{ width: "11.5%" }}>
-                            <div className="tableHeading"> Product ID</div>
-                          </th>
-                        </tr>
-                        <tbody>
+                      {selectedWorksheetDataLoading || worksheetsLoading ? (
+                        "Loading..."
+                      ) : selectedWorksheetData.length > 0 ? (
+                        <table
+                          style={{
+                            borderCollapse: "collapse",
+                            width: "100%",
+                            marginTop: "3%",
+                            border: "1px solid black",
+                          }}
+                        >
+                          {/* <th style={{ width: "5%" }}>
+                                <div className="tableHeading"> #</div>
+                              </th> */}
                           <tr>
-                            <th style={{ width: "5%" }}>
-                              <div className="tabledata"> 1</div>
-                            </th>
-                            <th style={{ width: "11.5%" }}>
-                              <div className="tabledata"> John max</div>
-                            </th>
-                            <th style={{ width: "11.5%" }}>
-                              <div className="tabledata"> 13 downtown</div>
-                            </th>
-                            <th style={{ width: "11.5%" }}>
-                              <div className="tabledata"> Newyork</div>
-                            </th>
-                            <th style={{ width: "11.5%" }}>
-                              <div className="tabledata"> Loop@gmail.com</div>
-                            </th>
-                            <th style={{ width: "11.5%" }}>
-                              <div className="tabledata"> 3242 5263 346</div>
-                            </th>
-                            <th style={{ width: "11.5%" }}>
-                              <div className="tabledata"> wireless case</div>
-                            </th>
-                            <th style={{ width: "11.5%" }}>
-                              <div className="tabledata"> 834232144323</div>
-                            </th>
+                            {selectedWorksheetData[0].map((header) => (
+                              <th style={{ width: "11.5%" }}>
+                                <div className="tableHeading">{header}</div>
+                              </th>
+                            ))}
                           </tr>
-                          <tr>
-                            <th style={{ width: "5%" }}>
-                              <div className="tabledata"> 2</div>
-                            </th>
-                            <th style={{ width: "11.5%" }}>
-                              <div className="tabledata"> John max</div>
-                            </th>
-                            <th style={{ width: "11.5%" }}>
-                              <div className="tabledata"> 13 downtown</div>
-                            </th>
-                            <th style={{ width: "11.5%" }}>
-                              <div className="tabledata"> Newyork</div>
-                            </th>
-                            <th style={{ width: "11.5%" }}>
-                              <div className="tabledata"> Loop@gmail.com</div>
-                            </th>
-                            <th style={{ width: "11.5%" }}>
-                              <div className="tabledata"> 3242 5263 346</div>
-                            </th>
-                            <th style={{ width: "11.5%" }}>
-                              <div className="tabledata"> wireless case</div>
-                            </th>
-                            <th style={{ width: "11.5%" }}>
-                              <div className="tabledata"> 834232144323</div>
-                            </th>
-                          </tr>
-                          <tr>
-                            <th style={{ width: "5%" }}>
-                              <div className="tabledata"> 3</div>
-                            </th>
-                            <th style={{ width: "11.5%" }}>
-                              <div className="tabledata"> John max</div>
-                            </th>
-                            <th style={{ width: "11.5%" }}>
-                              <div className="tabledata"> 13 downtown</div>
-                            </th>
-                            <th style={{ width: "11.5%" }}>
-                              <div className="tabledata"> Newyork</div>
-                            </th>
-                            <th style={{ width: "11.5%" }}>
-                              <div className="tabledata"> Loop@gmail.com</div>
-                            </th>
-                            <th style={{ width: "11.5%" }}>
-                              <div className="tabledata"> 3242 5263 346</div>
-                            </th>
-                            <th style={{ width: "11.5%" }}>
-                              <div className="tabledata"> wireless case</div>
-                            </th>
-                            <th style={{ width: "11.5%" }}>
-                              <div className="tabledata"> 834232144323</div>
-                            </th>
-                          </tr>
-                          <tr>
-                            <th style={{ width: "5%" }}>
-                              <div className="tabledata"> 4</div>
-                            </th>
-                            <th style={{ width: "11.5%" }}>
-                              <div className="tabledata"> John max</div>
-                            </th>
-                            <th style={{ width: "11.5%" }}>
-                              <div className="tabledata"> 13 downtown</div>
-                            </th>
-                            <th style={{ width: "11.5%" }}>
-                              <div className="tabledata"> Newyork</div>
-                            </th>
-                            <th style={{ width: "11.5%" }}>
-                              <div className="tabledata"> Loop@gmail.com</div>
-                            </th>
-                            <th style={{ width: "11.5%" }}>
-                              <div className="tabledata"> 3242 5263 346</div>
-                            </th>
-                            <th style={{ width: "11.5%" }}>
-                              <div className="tabledata"> wireless case</div>
-                            </th>
-                            <th style={{ width: "11.5%" }}>
-                              <div className="tabledata"> 834232144323</div>
-                            </th>
-                          </tr>
-                        </tbody>
-                      </table>
+                          <tbody>
+                            {selectedWorksheetData
+                              .slice(1)
+                              .map((row, index) => (
+                                <tr>
+                                  {row.map((cell) => (
+                                    <th style={{ width: "11.5%" }}>
+                                      <div className="tabledata"> {cell}</div>
+                                    </th>
+                                  ))}
+                                </tr>
+                              ))}
+                          </tbody>
+                        </table>
+                      ) : (
+                        "No data"
+                      )}
                     </div>
                   </div>
                 ) : null}
@@ -525,9 +365,9 @@ function AddDataModel(props) {
       </Modal>
       {/* ---------------------Delete MOdel */}
       <DeleteDialog
-        show={opendeleteDialog}
+        show={openDeleteDialog}
         onHide={() => {
-          SetDeleteDialog(false);
+          setDeleteDialog(false);
         }}
       ></DeleteDialog>
     </div>

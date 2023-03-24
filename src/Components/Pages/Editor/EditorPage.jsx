@@ -18,6 +18,8 @@ import ShareModel from "../../Component/Editor/ShareModel/ShareModel";
 import EditorView from "../../Component/Editor/editorView/EditorView";
 import DataSegmentArea from "../../Component/Editor/DataSegmentArea/DataSegmentArea";
 import FlowCanvas from "../../Component/Canvas";
+import { useSelector } from "react-redux";
+import { getAllDataSources } from "../../../store/Actions/dataSourceActions";
 
 const { Sider, Content, Header } = Layout;
 
@@ -32,6 +34,9 @@ function EditorPage() {
   const [MetricDropdown, setMetricDropDown] = useState(false);
   const [viewModel, setViewModel] = useState(false);
 
+  const dataSources = useSelector((state) => state.dataSources.data);
+  const dataSourcesLoading = useSelector((state) => state.dataSources.loading);
+
   function ShowNodeSection() {
     SetNodeSection(true);
     SetDataSegment(false);
@@ -42,7 +47,8 @@ function EditorPage() {
   }
   useEffect(() => {
     console.log(projectNameValue);
-  });
+    getAllDataSources();
+  }, []);
 
   return (
     <div>
@@ -286,24 +292,17 @@ function EditorPage() {
                   </div>
                   {DataDropdown ? (
                     <div className="dropdownTextStyle">
-                      <div>
-                        <button className="item iconButton"> File 1 </button>
-                      </div>
-                      <div>
-                        <button className="item iconButton"> File 1 </button>
-                      </div>
-                      <div>
-                        <button className="item iconButton"> File 1 </button>
-                      </div>
-                      <div>
-                        <button className="item iconButton"> File 1 </button>
-                      </div>
-                      <div>
-                        <button className="item iconButton"> File 1 </button>
-                      </div>
-                      <div>
-                        <button className="item iconButton"> File 1 </button>
-                      </div>
+                      {dataSourcesLoading
+                        ? "Loading..."
+                        : dataSources.map((item) => {
+                            return (
+                              <div>
+                                <button className="item iconButton">
+                                  {item.name}
+                                </button>
+                              </div>
+                            );
+                          })}
                     </div>
                   ) : null}
                 </div>
