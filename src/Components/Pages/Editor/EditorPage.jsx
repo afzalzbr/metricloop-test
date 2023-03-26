@@ -20,6 +20,7 @@ import DataSegmentArea from "../../Component/Editor/DataSegmentArea/DataSegmentA
 import FlowCanvas from "../../Component/Canvas";
 import { useSelector } from "react-redux";
 import { getAllDataSources } from "../../../store/Actions/dataSourceActions";
+import NodeDrawer from "../../Component/Canvas/Nodes/NodeDrawer";
 
 const { Sider, Content, Header } = Layout;
 
@@ -605,6 +606,7 @@ function EditorPage() {
           setViewModel(false);
         }}
       ></EditorView>
+      <NodeDrawer />
     </div>
   );
 }

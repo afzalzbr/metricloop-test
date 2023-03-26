@@ -14,6 +14,8 @@ import { ReactComponent as PlusIcon } from "../../../Assets/svgIcon/NodeIcons/Pl
 
 // components imports
 import CustomHandle from "./CustomHandle";
+import NodeDrawer from "./NodeDrawer";
+import { setSelectedNode } from "../../../../store/Actions/editorActions";
 
 const Wrapper = styled.div`
   padding: 10px 17px 10px 26px;
@@ -113,8 +115,9 @@ const handleCircleStyles = {
 
 const DefaultNode = ({ id, data }) => {
   const handleIds = data?.handleIds;
+  const [open, setOpen] = React.useState(false);
   return (
-    <Wrapper>
+    <Wrapper onClick={() => setSelectedNode({ id, node_data: data })}>
       <Space direction="vertical" style={{ width: "100%" }}>
         <Space className="node-title" wrap gap={8} style={{ width: "100%" }}>
           <div>{data?.label}</div>
@@ -276,6 +279,7 @@ const DefaultNode = ({ id, data }) => {
           style={handleStyles[Position.Left]}
         />
       </CustomHandle>
+      {/* <NodeDrawer open={open} setOpen={setOpen} /> */}
     </Wrapper>
   );
 };

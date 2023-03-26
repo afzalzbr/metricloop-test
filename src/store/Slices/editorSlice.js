@@ -18,6 +18,10 @@ const initialState = {
     fail: false,
     success: false,
   },
+  selectedNode: {
+    id: 0,
+    node_data: {},
+  },
   boardId: 0,
 }
 
@@ -105,7 +109,12 @@ export const editorSlice = createSlice({
       state.addEdge.loading = false;
       state.addEdge.success = false;
     },
-
+    setSelectedNode: (state, action) => {
+      state.selectedNode = action.payload;
+    },
+    resetSelectedNode: (state) => {
+      state.selectedNode = initialState.selectedNode;
+    },
     // reset
     reset: () => initialState,
   },

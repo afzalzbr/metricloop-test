@@ -27,6 +27,7 @@ import {
   updateNodeInBoard,
 } from "../../../store/Actions/editorActions";
 import { useSelector } from "react-redux";
+import NodeDrawer from "./Nodes/NodeDrawer";
 
 const nodeTypes = {
   custom: CustomNode,
@@ -48,6 +49,7 @@ const FlowCanvas = () => {
   const edgeDB = useSelector((state) => state.editor.edges);
   const [nodes, setNodes, onNodesChange] = useNodesState(nodeData);
   const [edges, setEdges, onEdgesChange] = useEdgesState(edgeData);
+  const [currentNode, setCurrentNode] = React.useState(null);
 
   const onConnect = useCallback(
     (params) => {

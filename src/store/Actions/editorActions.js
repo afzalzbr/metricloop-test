@@ -95,3 +95,13 @@ export const createNewEdgeInBoard = (params) => {
 export const resetAddEdge = () => {
   dispatch(editorActions.resetAddEdge())
 }
+
+// set selected node
+export const setSelectedNode = (node) => {
+  dispatch(editorActions.setSelectedNode(node));
+}
+
+// reset selected node
+export const resetSelectedNode = () => {
+  dispatch(editorActions.resetSelectedNode());
+}
