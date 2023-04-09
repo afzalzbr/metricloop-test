@@ -39,6 +39,7 @@ export const createNewNodeInBoard = (params) => {
 }
 
 export const updateNodeInBoard = (params) => {
+  console.log('update node in a Board params: ', params)
   // dispatch(editorActions.addNodeLoading());
   // console.log('update node in a Board params: ', params)
   return updateNodeInBoardService(params)

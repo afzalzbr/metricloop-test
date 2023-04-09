@@ -1243,7 +1243,7 @@ function EditorView(props) {
 
                   <div className="actionButton d-flex align-center justify-end">
                     <button
-                      className="cancelBtn"
+                      className="cancel-btn"
                       onClick={() => setAddMetricSection(false)}
                     >
                       Cancel
@@ -1883,7 +1883,7 @@ function EditorView(props) {
 
             //       <div className="actionButton d-flex align-center justify-end">
             //         <button
-            //           className="cancelBtn"
+            //           className="cancel-btn"
             //           onClick={() => setAddSegmentSection(false)}
             //         >
             //           Cancel

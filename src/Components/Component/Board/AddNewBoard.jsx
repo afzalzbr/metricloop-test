@@ -1,49 +1,31 @@
-import React, { useEffect, useState } from "react";
-import { Modal, Input, Select } from "antd";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
+import React, { useEffect, useState } from 'react';
+import { Modal, Input } from 'antd';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
-import SmallCloseIcon from "../../Assets/svgIcon/SmallCloseIcon";
+import SmallCloseIcon from '../../Assets/svgIcon/SmallCloseIcon';
 
 import {
   createNewBoard,
   resetAddBoard,
-} from "../../../store/Actions/boardsActions";
-
-const OPTIONS = [
-  {
-    value: "simple",
-    label: "Simple Board",
-  },
-  {
-    value: "analytics",
-    label: "Analytics Board",
-  },
-];
-
-const OPTIONS_USE = [
-  {
-    value: "testing",
-    label: "Testing purpose",
-  },
-  {
-    value: "professional",
-    label: "Professional purpose",
-  },
-];
+} from '../../../store/Actions/boardsActions';
+import useSweetAlert from '../../../hooks/useSweetAlert';
 
 const initialState = {
-  board_name: "",
-  board_type: "",
-  industry: "",
+  board_name: '',
+  // board_type: '',
+  industry: '',
 };
+
 
 const AddNewBoard = (props) => {
   const [state, setState] = useState(initialState);
   const addBoardLoading = useSelector((state) => state.boards.addLoading);
   const addBoardSuccess = useSelector((state) => state.boards.addSuccess);
   const addBoardFail = useSelector((state) => state.boards.addFail);
+
+  // sweet alert hook
+  const showAlert = useSweetAlert();
 
   const CloseModel = () => {
     props.onHide(false);
@@ -57,37 +39,19 @@ const AddNewBoard = (props) => {
     setState((state) => ({ ...state, [name]: value }));
   };
 
-  const onDropdownChange = (value, name) => {
-    setState((state) => ({ ...state, [name]: value }));
-  };
-
   const handleSubmit = () => {
     createNewBoard(state).then(() => {
-      if (window.location.pathname === "/") {
-        navigate("/board");
+      if (window.location.pathname === '/') {
+        navigate('/board');
       }
     });
   };
 
-  const redirectToBoards = () => {
-    // let route = window.location.pathname;
-    // if (route === "/") {
-    //   navigate("/board");
-    // }
-  };
-
   useEffect(() => {
     if (addBoardSuccess) {
-      navigate("/board");
+      navigate('/board');
       CloseModel();
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "Board created successfully",
-        showConfirmButton: false,
-        timer: 1500,
-        toast: true,
-      });
+      showAlert('success', { title: 'Board created successfully' });
       if (props?.onSuccess) props?.onSuccess();
       setTimeout(() => {
         resetAddBoard();
@@ -95,14 +59,7 @@ const AddNewBoard = (props) => {
       }, 1500);
       setState(initialState);
     } else if (addBoardFail) {
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "Board not created",
-        showConfirmButton: false,
-        timer: 1500,
-        toast: true,
-      });
+      showAlert('error', { title: 'Board not created' });
       setTimeout(() => {
         resetAddBoard();
       }, 1500);
@@ -121,58 +78,31 @@ const AddNewBoard = (props) => {
     >
       <div className="Homepage">
         <div className="AddModel">
-          <div className="spantext">Board Name</div>
+          <div className="span-text">Board Name</div>
           <Input
-            style={{ marginTop: "3%", background: "#EBEBEB" }}
+            style={{ marginTop: '3%', background: '#EBEBEB' }}
             value={state.board_name}
             onChange={handleOnChange}
             name="board_name"
           />
-          <div className="spantext">Type</div>
-          <Select
-            showSearch
-            style={{ width: "100%", marginTop: "3%" }}
-            optionFilterProp="children"
-            filterOption={(input, option) =>
-              (option?.label ?? "").includes(input)
-            }
-            filterSort={(optionA, optionB) =>
-              (optionA?.label ?? "")
-                .toLowerCase()
-                .localeCompare((optionB?.label ?? "").toLowerCase())
-            }
-            options={OPTIONS}
-            value={state.board_type}
-            name="board_type"
-            onChange={(value) => onDropdownChange(value, "board_type")}
-          />
-          <div className="spantext">
-            How are you planning to use Metricloop?
-          </div>
-          <Select
-            showSearch
-            style={{ width: "100%", marginTop: "3%" }}
-            optionFilterProp="children"
-            filterOption={(input, option) =>
-              (option?.label ?? "").includes(input)
-            }
-            filterSort={(optionA, optionB) =>
-              (optionA?.label ?? "")
-                .toLowerCase()
-                .localeCompare((optionB?.label ?? "").toLowerCase())
-            }
-            options={OPTIONS_USE}
+          <div className="span-text">Description</div>
+          <Input.TextArea
+            className="input-textarea"
+            style={{ marginTop: '3%', background: '#EBEBEB' }}
             value={state.industry}
+            onChange={handleOnChange}
             name="industry"
-            onChange={(value) => onDropdownChange(value, "industry")}
+            maxLength={100}
+            autoSize={{ minRows: 2, maxRows: 8 }}
+            showCount
           />
           <div
             className="d-flex align-center justify-end"
-            style={{ marginTop: "11%" }}
+            style={{ marginTop: '11%' }}
           >
             <button
               disabled={addBoardLoading}
-              className="btn-primary cancelbtn"
+              className="btn-primary cancel-btn"
               onClick={CloseModel}
             >
               Cancel

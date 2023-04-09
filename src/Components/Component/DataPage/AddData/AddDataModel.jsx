@@ -199,6 +199,8 @@ function AddDataModel(props) {
                                 id={sheet.id}
                                 name={sheet.name}
                                 handleDetails={TableDetail}
+                                lastModified={sheet.last_modified_time}
+                                ownedBy={sheet?.owner?.name}
                               />
                             ))}
                         {/* <tr style={{ borderBottom: "1px solid #C7C7C7" }}>

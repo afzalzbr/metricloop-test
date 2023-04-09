@@ -414,7 +414,7 @@ function EditSegmentsModel(props) {
               </Row>
 
               <div className="actionButton d-flex align-center justify-end">
-                <button className="cancelBtn" onClick={CloseModel}>
+                <button className="cancel-btn" onClick={CloseModel}>
                   Cancel
                 </button>
                 <button className="saveBtn" onClick={CloseModel}>

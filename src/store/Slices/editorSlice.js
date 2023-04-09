@@ -19,8 +19,9 @@ const initialState = {
     success: false,
   },
   selectedNode: {
-    id: 0,
-    node_data: {},
+    id: -1,
+    nodeDB: {},
+    node_data: {}
   },
   boardId: 0,
 }
@@ -111,6 +112,7 @@ export const editorSlice = createSlice({
     },
     setSelectedNode: (state, action) => {
       state.selectedNode = action.payload;
+      state.selectedNode.nodeDB = state.nodes.find((node) => node.node_id == action.payload.id);
     },
     resetSelectedNode: (state) => {
       state.selectedNode = initialState.selectedNode;

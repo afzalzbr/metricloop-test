@@ -9,7 +9,7 @@ import { DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 import DeleteDialog from "../../DeleteDialog/DeleteDialog";
 import GoBackButton from "../../../Assets/svgIcon/GoBackButton";
 
-const TableRow = ({ id, name, handleDetails }) => {
+const TableRow = ({ id, name, handleDetails, lastModified, ownedBy }) => {
   const [showDropdown, setShowDropdown] = useState(false);
 
   const TableDetails = () => {
@@ -38,7 +38,7 @@ const TableRow = ({ id, name, handleDetails }) => {
           paddingBottom: "2%",
         }}
       >
-        <div className="tabledataspan">Metricloop</div>
+        <div className="tabledataspan">{ownedBy}</div>
       </td>
       <td
         style={{
@@ -47,7 +47,7 @@ const TableRow = ({ id, name, handleDetails }) => {
           paddingBottom: "2%",
         }}
       >
-        <div className="tabledataspan">12,15,2022</div>
+        <div className="tabledataspan">{lastModified}</div>
       </td>
       <td
         style={{

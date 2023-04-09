@@ -1,30 +1,53 @@
-import React, { useEffect, useState } from "react";
-import { Button, Drawer, theme, Input, Select, Avatar } from "antd";
-import BlackCloseIcon from "../../../Assets/svgIcon/BlackCloseIcon";
-import ColorPickerComponet from "../../../Component/ColorPicker/ColorPicker.component";
-import { UserOutlined } from "@ant-design/icons";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from 'react';
+import { Button, Drawer, theme, Input, Select, Avatar } from 'antd';
+import BlackCloseIcon from '../../../Assets/svgIcon/BlackCloseIcon';
+import ColorPickerComponent from '../../../Component/ColorPicker/ColorPicker.component';
+import { UserOutlined } from '@ant-design/icons';
+import { useSelector } from 'react-redux';
+import { CloseOutlined, CheckOutlined } from '@ant-design/icons';
+import EditIcon from '../../../Assets/svgIcon/EditorSvgIcon/EditIcon';
+import { updateNodeInBoard } from '../../../../store/Actions/editorActions';
 
 const { TextArea } = Input;
 
 const NodeDrawer = ({}) => {
   const [open, setOpen] = useState(false);
   const selectedNode = useSelector((state) => state.editor.selectedNode);
-  const [projectName, setProjectName] = useState(true);
-  const [projectNameValue, setProjectNameValue] = useState("Project 1");
+  const nodeLabel = selectedNode?.node_data?.label;
+  const nodeDb = selectedNode?.nodeDB;
+  console.log('NodeDrawer nodeLabel: ', nodeLabel);
+  const [editNodeName, setEditNodeName] = useState(false);
+  const [nodeNameValue, setNodeNameValue] = useState(nodeLabel);
 
   const onClose = () => {
     setOpen(false);
   };
 
   useEffect(() => {
-    if (selectedNode.id > -1) {
+    console.log('useEffect[selectedNode] NodeDrawer: ', selectedNode);
+    if (selectedNode.id > -1 && !open) {
       setOpen(true);
+      setNodeNameValue(() => nodeLabel);
     }
-    // else {
-    //   setOpen(false);
-    // }
   }, [selectedNode]);
+
+  const onCloseEditName = () => {
+    setEditNodeName(() => false);
+    setNodeNameValue(() => nodeLabel);
+  };
+
+  const submitEditName = () => {
+    setEditNodeName(() => false);
+    // let nodeId = nodeDb.id;
+    console.log('submitEditName: ', nodeDb);
+    let nodeData = JSON.stringify({
+      ...nodeDb.node_data,
+      label: nodeNameValue,
+      data: { ...nodeDb.node_data.data, label: nodeNameValue },
+    });
+    let nodeDB = { ...nodeDb, node_data: nodeData, node_name: nodeNameValue };
+    updateNodeInBoard({ ...nodeDB });
+  };
 
   return (
     <>
@@ -36,89 +59,100 @@ const NodeDrawer = ({}) => {
         closable={false}
       >
         <div className="d-flex justify-end">
-          <Button onClick={onClose} className="iconButton">
-            <BlackCloseIcon></BlackCloseIcon>
+          <Button onClick={onClose} shape="circle" type="secondary">
+            <BlackCloseIcon />
           </Button>
         </div>
         <div className="ContentSidebar">
-          <div className="d-flex">
-            {projectName ? (
-              <div>
-                <div className="heading1">{projectNameValue}</div>
+          <div className="d-flex" style={{ height: '32px' }}>
+            {!editNodeName ? (
+              <div className="d-flex align-center">
+                <div className="heading1">{nodeNameValue}</div>
+                <Button
+                  type="secondary"
+                  shape="circle"
+                  icon={
+                    <EditIcon style={{ fontSize: '16px', color: '#00ff00' }} />
+                  }
+                  style={{ marginLeft: '10px' }}
+                  onClick={() => setEditNodeName(true)}
+                />
               </div>
             ) : (
-              <div>
+              <div className="d-flex" style={{ width: '80%' }}>
                 <Input
-                  style={{ marginLeft: "2rem", width: "80%" }}
-                  placeholder="Project 1"
-                  defaultValue={projectNameValue}
-                  onChange={(e) => setProjectNameValue(e.target.value)}
+                  style={{ width: '80%' }}
+                  placeholder="Node label"
+                  defaultValue={nodeNameValue}
+                  onChange={(e) => setNodeNameValue(e.target.value)}
+                />
+                <Button
+                  type="secondary"
+                  shape="circle"
+                  icon={
+                    <CheckOutlined
+                      style={{ fontSize: '16px', color: '#00ff00' }}
+                    />
+                  }
+                  style={{ marginLeft: '5px' }}
+                  onClick={submitEditName}
+                />
+                <Button
+                  type="secondary"
+                  shape="circle"
+                  icon={
+                    <CloseOutlined
+                      style={{ fontSize: '16px', color: '#ff0000' }}
+                    />
+                  }
+                  style={{ marginLeft: '5px' }}
+                  onClick={onCloseEditName}
                 />
               </div>
             )}
-
-            <div style={{ marginLeft: "1rem", marginTop: "0.5rem" }}>
-              <button
-                className="iconButton"
-                onClick={async () => {
-                  setProjectName(() => !projectName);
-                }}
-              >
-                <svg
-                  width="17"
-                  height="21"
-                  viewBox="0 0 17 21"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M15.4715 18.5427H1.12372C0.851916 18.5427 0.591243 18.6509 0.399047 18.8435C0.206852 19.0361 0.098877 19.2974 0.098877 19.5697C0.098877 19.8421 0.206852 20.1034 0.399047 20.296C0.591243 20.4886 0.851916 20.5968 1.12372 20.5968H15.4715C15.7434 20.5968 16.004 20.4886 16.1962 20.296C16.3884 20.1034 16.4964 19.8421 16.4964 19.5697C16.4964 19.2974 16.3884 19.0361 16.1962 18.8435C16.004 18.6509 15.7434 18.5427 15.4715 18.5427Z"
-                    fill="#575757"
-                  />
-                  <path
-                    d="M1.12412 16.4887H1.21636L5.48996 16.0984C5.95811 16.0517 6.39596 15.845 6.73002 15.513L15.9536 6.26986C16.3116 5.89086 16.5051 5.3851 16.4916 4.8634C16.4782 4.3417 16.2589 3.84662 15.8819 3.48664L13.0738 0.672614C12.7073 0.327634 12.2271 0.12969 11.7244 0.116434C11.2218 0.103179 10.7318 0.275537 10.3477 0.600723L1.12412 9.84389C0.792858 10.1787 0.586596 10.6174 0.539961 11.0866L0.0992781 15.3692C0.0854724 15.5197 0.10495 15.6713 0.156322 15.8133C0.207694 15.9553 0.289696 16.0842 0.396483 16.1909C0.492245 16.286 0.605814 16.3614 0.730678 16.4125C0.855543 16.4636 0.989246 16.4895 1.12412 16.4887ZM11.6493 2.11044L14.4471 4.9142L12.3974 6.91689L9.65083 4.16448L11.6493 2.11044ZM2.52816 11.2612L8.29804 5.52014L11.0651 8.29309L5.32599 14.0444L2.25145 14.332L2.52816 11.2612Z"
-                    fill="#575757"
-                  />
-                </svg>
-              </button>
-            </div>
           </div>
-          <div style={{ marginTop: "2rem" }}>
+          <div style={{ marginTop: '2rem' }}>
             <div className="heading2">Add Metric</div>
             <Select
               className="CustomSelectStyle"
-              defaultValue="lucy"
-              options={[
-                { value: "jack", label: "Jack" },
-                { value: "lucy", label: "Lucy" },
-                { value: "Yiminghe", label: "yiminghe" },
-              ]}
+              // defaultValue="lucy"
+              placeholder="Select Metric"
+              options={
+                [
+                  // { value: 'jack', label: 'Jack' },
+                  // { value: 'lucy', label: 'Lucy' },
+                  // { value: 'Yiminghe', label: 'yiminghe' },
+                ]
+              }
             />
           </div>
-          <div style={{ marginTop: "1rem" }} className="d-flex ">
-            <div style={{ width: "75%" }}>
+          <div style={{ marginTop: '1rem' }} className="d-flex ">
+            <div style={{ width: '75%' }}>
               <div className="heading2">Shape</div>
               <Select
                 className="CustomSelectStyle"
-                defaultValue="lucy"
-                options={[
-                  { value: "jack", label: "Jack" },
-                  { value: "lucy", label: "Lucy" },
-                  { value: "Yiminghe", label: "yiminghe" },
-                ]}
+                // defaultValue="lucy"
+                placeholder="Select Shape"
+                options={
+                  [
+                    // { value: 'jack', label: 'Jack' },
+                    // { value: 'lucy', label: 'Lucy' },
+                    // { value: 'Yiminghe', label: 'yiminghe' },
+                  ]
+                }
               />
             </div>
-            <div style={{ width: "25%", paddingLeft: "1rem" }}>
+            <div style={{ width: '25%', paddingLeft: '1rem' }}>
               <div className="heading2">Color</div>
-              <div style={{ marginTop: "1rem" }}>
-                <ColorPickerComponet></ColorPickerComponet>
+              <div style={{ marginTop: '1rem' }}>
+                <ColorPickerComponent position="right" />
               </div>
             </div>
           </div>
-          <div style={{ marginTop: "1rem" }}>
+          <div style={{ marginTop: '1rem' }}>
             <div className="d-flex align-center">
               <div className="heading2">Add Image</div>
-              <button className="iconButton" style={{ marginLeft: "0.5rem" }}>
+              <button className="iconButton" style={{ marginLeft: '0.5rem' }}>
                 <svg
                   width="25"
                   height="26"
@@ -133,55 +167,57 @@ const NodeDrawer = ({}) => {
                 </svg>
               </button>
             </div>
-            <div style={{ marginTop: "0.8rem" }}>
+            <div style={{ marginTop: '0.8rem' }}>
               <Avatar
                 size="large"
-                style={{ marginRight: "0.9rem" }}
+                style={{ marginRight: '0.9rem' }}
                 icon={<UserOutlined />}
               />
               <Avatar
                 size="large"
-                style={{ marginRight: "0.9rem" }}
+                style={{ marginRight: '0.9rem' }}
                 icon={<UserOutlined />}
               />
               <Avatar
                 size="large"
-                style={{ marginRight: "0.9rem" }}
+                style={{ marginRight: '0.9rem' }}
                 icon={<UserOutlined />}
               />
             </div>
           </div>
-          <div style={{ marginTop: "2rem" }}>
-            <div className="heading2" style={{ marginBottom: "0.9rem" }}>
+          <div style={{ marginTop: '2rem' }}>
+            <div className="heading2" style={{ marginBottom: '0.9rem' }}>
               Add plain text description, links, etc
             </div>
-            <TextArea style={{ backgroundColor: "#EBEBEB" }} rows={4} />
+            <TextArea style={{ backgroundColor: '#EBEBEB' }} rows={4} />
           </div>
-          <div style={{ marginTop: "2rem", marginBottom: "3rem" }}>
-            <div className="heading2" style={{ marginBottom: "0.9rem" }}>
+          <div
+            style={{ marginTop: '2rem', marginBottom: '3rem', display: 'none' }}
+          >
+            <div className="heading2" style={{ marginBottom: '0.9rem' }}>
               Comments
             </div>
             <div className="CommentSection">
-              <div style={{ width: "20%" }}>
+              <div style={{ width: '20%' }}>
                 <Avatar
-                  style={{ backgroundColor: "#87d068" }}
+                  style={{ backgroundColor: '#87d068' }}
                   icon={<UserOutlined />}
                 />
               </div>
-              <div style={{ width: "80%" }} className="text">
+              <div style={{ width: '80%' }} className="text">
                 Lorem ipsum dolore magna
               </div>
             </div>
             <div className="CommentSection">
-              <div style={{ width: "20%" }}>
+              <div style={{ width: '20%' }}>
                 <Avatar
-                  style={{ backgroundColor: "#87d068" }}
+                  style={{ backgroundColor: '#87d068' }}
                   icon={<UserOutlined />}
                 />
               </div>
-              <div style={{ width: "80%" }} className="text">
+              <div style={{ width: '80%' }} className="text">
                 <TextArea
-                  style={{ backgroundColor: "#EBEBEB", border: "none" }}
+                  style={{ backgroundColor: '#EBEBEB', border: 'none' }}
                   defaultValue="Add Comment"
                   className="text"
                   rows={4}
@@ -189,7 +225,7 @@ const NodeDrawer = ({}) => {
               </div>
             </div>
             <div className="d-flex justify-end">
-              <button className="SaveCommentButton btn-primary">Save </button>
+              <button className="SaveCommentButton btn-primary">Save</button>
             </div>
           </div>
         </div>

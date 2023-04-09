@@ -89,7 +89,7 @@ function EditorPage() {
                 <div className="box">
                   <div className="d-flex align-center ">
                     <SingleLine></SingleLine>
-                    <div className="spantext" style={{ marginLeft: "5%" }}>
+                    <div className="span-text" style={{ marginLeft: "5%" }}>
                       None
                     </div>
                   </div>
@@ -97,7 +97,7 @@ function EditorPage() {
                 <div className="box">
                   <div className="d-flex align-center ">
                     <LeftArrow></LeftArrow>
-                    <div className="spantext" style={{ marginLeft: "5%" }}>
+                    <div className="span-text" style={{ marginLeft: "5%" }}>
                       Line arrow
                     </div>
                   </div>
@@ -105,7 +105,7 @@ function EditorPage() {
                 <div className="box">
                   <div className="d-flex align-center ">
                     <TriangleArrow></TriangleArrow>
-                    <div className="spantext" style={{ marginLeft: "5%" }}>
+                    <div className="span-text" style={{ marginLeft: "5%" }}>
                       Triangle arrow
                     </div>
                   </div>
@@ -113,7 +113,7 @@ function EditorPage() {
                 <div className="box">
                   <div className="d-flex align-center ">
                     <ReverseTriangle></ReverseTriangle>
-                    <div className="spantext" style={{ marginLeft: "5%" }}>
+                    <div className="span-text" style={{ marginLeft: "5%" }}>
                       Reversed triangle
                     </div>
                   </div>
@@ -121,7 +121,7 @@ function EditorPage() {
                 <div className="box">
                   <div className="d-flex align-center ">
                     <Circle></Circle>
-                    <div className="spantext" style={{ marginLeft: "5%" }}>
+                    <div className="span-text" style={{ marginLeft: "5%" }}>
                       Circle arrow
                     </div>
                   </div>
@@ -129,7 +129,7 @@ function EditorPage() {
                 <div className="box">
                   <div className="d-flex align-center ">
                     <DiamondArrow></DiamondArrow>
-                    <div className="spantext" style={{ marginLeft: "5%" }}>
+                    <div className="span-text" style={{ marginLeft: "5%" }}>
                       Diamond arrow
                     </div>
                   </div>
@@ -140,7 +140,7 @@ function EditorPage() {
                 <div className="box">
                   <div className="d-flex align-center ">
                     <RoundIcon></RoundIcon>
-                    <div className="spantext" style={{ marginLeft: "5%" }}>
+                    <div className="span-text" style={{ marginLeft: "5%" }}>
                       Round
                     </div>
                   </div>
@@ -148,7 +148,7 @@ function EditorPage() {
                 <div className="box">
                   <div className="d-flex align-center ">
                     <SquareIcon></SquareIcon>
-                    <div className="spantext" style={{ marginLeft: "5%" }}>
+                    <div className="span-text" style={{ marginLeft: "5%" }}>
                       Square
                     </div>
                   </div>
@@ -280,7 +280,7 @@ function EditorPage() {
                       )}
 
                       <div
-                        className="spantext"
+                        className="span-text"
                         style={{
                           marginLeft: "0.7rem",
                           color: "black",
@@ -352,7 +352,7 @@ function EditorPage() {
                       )}
 
                       <div
-                        className="spantext"
+                        className="span-text"
                         style={{
                           marginLeft: "0.7rem",
                           color: "black",
@@ -428,7 +428,7 @@ function EditorPage() {
                       )}
 
                       <div
-                        className="spantext"
+                        className="span-text"
                         style={{
                           marginLeft: "0.7rem",
                           color: "black",
