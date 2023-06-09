@@ -7,7 +7,7 @@ function AcceptAuthCode() {
     const searchParams = new URLSearchParams(window.location.search);
     const code = searchParams.get("code");
     if (code) {
-      window.href('http://44.238.178.232/google-auth' + window.location.search);
+      window.location ='http://44.238.178.232/google-auth' + window.location.search;
     }
   }, []);
 
