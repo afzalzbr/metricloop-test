@@ -1,11 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 function AcceptAuthCode() {
   console.log(window.location.href);
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const code = searchParams.get("code");
+    if (code) {
+      window.href('http://44.238.178.232/google-auth' + window.location.search);
+    }
+  }, []);
+
   return (
     <div>
-      <h1>GoogleAuthPage</h1>
+      <h1>GoogleAuthPage - redirecting</h1>
       <div />
       <div />
       <div />
@@ -13,7 +21,7 @@ function AcceptAuthCode() {
       <div />
       <div />
       <div />
-      <div
+      {/* <div
         style={{
           height: "500px",
           display: "flex",
@@ -22,7 +30,7 @@ function AcceptAuthCode() {
         }}
       >
         <Link to={"/board"}>Go to Boards</Link>
-      </div>
+      </div> */}
     </div>
   );
 }
